@@ -44,7 +44,13 @@ const keys = {
     a: { pressed: false },
     d: { pressed: false },
     w: { pressed: false },
+
+    ArrowLeft  : { pressed: false },
+    ArrowRight : { pressed: false },
+    ArrowUp    : { pressed: false },
 };
+
+let lasteMove;
 
 
 let playerOne = new Fighter(
@@ -76,13 +82,28 @@ const startAnimation = () => {
     
 
     playerOne.velocity.x = 0;
-    if (keys.d.pressed) {
-        playerOne.velocity.x = 1;
+    if (keys.d.pressed && lasteMove === 'd' && playerOne.position.x + playerOne.width < canvas.width) {
+        playerOne.velocity.x = 3;
     }
-    if (keys.a.pressed) {
-        playerOne.velocity.x = -1;
+    if (keys.a.pressed && lasteMove === 'a' && playerOne.position.x > 0) {
+        playerOne.velocity.x = -3;
     }
 
+    if (keys.w.pressed && playerOne.position.y + playerOne.height >= canvas.height) {
+        playerOne.velocity.y = -10;
+    }
+
+    playerTwo.velocity.x = 0;
+    if (keys.ArrowRight.pressed && lasteMove === 'ArrowRight' && playerTwo.position.x + playerTwo.width < canvas.width) {
+        playerTwo.velocity.x = 3;
+    }
+    if (keys.ArrowLeft.pressed && lasteMove === 'ArrowLeft' && playerTwo.position.x > 0) {
+        playerTwo.velocity.x = -3;
+    }
+
+    if(keys.ArrowUp.pressed && playerTwo.position.y + playerTwo.height >= canvas.height) {
+        playerTwo.velocity.y = -10;
+    }
 
 }
 
@@ -94,15 +115,32 @@ document.addEventListener('keydown', (event) => {
     switch (event.key) {
         case 'a':
             keys.a.pressed = true;
+            lasteMove = 'a';
             break;
 
         case 'd':
             keys.d.pressed = true;
+            lasteMove = 'd';
             break;
 
         case 'w':
             keys.w.pressed = true;
             break;
+
+        case 'ArrowLeft':
+            keys.ArrowLeft.pressed = true;
+            lasteMove = 'ArrowLeft';
+            break;
+
+        case 'ArrowRight':
+            keys.ArrowRight.pressed = true;
+            lasteMove = 'ArrowRight';
+            break;
+
+        case 'ArrowUp':
+            keys.ArrowUp.pressed = true;
+            break;
+
     }
 
     console.log(event.key);
@@ -121,6 +159,20 @@ document.addEventListener('keyup', (event) => {
         case 'w':
             keys.w.pressed = false;
             break;
+        
+        case 'ArrowLeft':
+            keys.ArrowLeft.pressed = false;
+            break;
+
+        case 'ArrowRight':
+            keys.ArrowRight.pressed = false;
+            break;
+
+        case 'ArrowUp':
+            keys.ArrowUp.pressed = false;
+            break;
+
+        
     }
 
     console.log(event.key);
