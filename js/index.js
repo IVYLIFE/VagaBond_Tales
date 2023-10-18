@@ -1,15 +1,13 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-
 canvas.width = window.innerWidth - 10;
 canvas.height = window.innerHeight - 10;
-// canvas.width = 1020;
-// canvas.height = 900;
+
 
 const gravity = 0.2;
 
-class Fighter {
+class Player {
     constructor({ position, velocity }) {
         this.position = position;
         this.velocity = velocity;
@@ -40,6 +38,7 @@ class Fighter {
     }
 }
 
+
 const keys = {
     a: { pressed: false },
     d: { pressed: false },
@@ -50,23 +49,26 @@ const keys = {
     ArrowUp    : { pressed: false },
 };
 
-let lasteMove;
+let lastMove;
+let poppedMove;
+let playerOneMove = [];
+let playerTwoMove = [];
 
 
-let playerOne = new Fighter(
+
+let playerOne = new Player(
     {
         position: { x: 200, y: 0 },
         velocity: { x: 0, y: 0 }
     },
 );
 
-let playerTwo = new Fighter(
+let playerTwo = new Player(
     {
         position: { x: 900, y: 0 },
         velocity: { x: 0, y: 0 }
     },
 );
-
 
 
 
@@ -82,45 +84,60 @@ const startAnimation = () => {
     
 
     playerOne.velocity.x = 0;
-    if (keys.d.pressed && lasteMove === 'd' && playerOne.position.x + playerOne.width < canvas.width) {
+
+    if (keys.d.pressed && lastMove === 'd' && playerOne.position.x + playerOne.width < canvas.width) {
         playerOne.velocity.x = 3;
     }
-    if (keys.a.pressed && lasteMove === 'a' && playerOne.position.x > 0) {
+    if (keys.a.pressed && lastMove === 'a' && playerOne.position.x > 0) {
         playerOne.velocity.x = -3;
     }
 
-    if (keys.w.pressed && playerOne.position.y + playerOne.height >= canvas.height) {
-        playerOne.velocity.y = -10;
+    if(keys.w.pressed && playerOne.position.y + playerOne.height >= canvas.height) {
+        playerOne.velocity.y = -12;
     }
+    
+
+
+    // ================================== playerTwo ==================================
 
     playerTwo.velocity.x = 0;
-    if (keys.ArrowRight.pressed && lasteMove === 'ArrowRight' && playerTwo.position.x + playerTwo.width < canvas.width) {
+
+    if (keys.ArrowRight.pressed && lastMove === 'ArrowRight' && playerTwo.position.x + playerTwo.width < canvas.width) {
         playerTwo.velocity.x = 3;
     }
-    if (keys.ArrowLeft.pressed && lasteMove === 'ArrowLeft' && playerTwo.position.x > 0) {
+    if (keys.ArrowLeft.pressed && lastMove === 'ArrowLeft' && playerTwo.position.x > 0) {
         playerTwo.velocity.x = -3;
     }
 
     if(keys.ArrowUp.pressed && playerTwo.position.y + playerTwo.height >= canvas.height) {
-        playerTwo.velocity.y = -10;
+        playerTwo.velocity.y = -12;
     }
 
 }
 
 startAnimation();
 
-
-
 document.addEventListener('keydown', (event) => {
     switch (event.key) {
+
         case 'a':
             keys.a.pressed = true;
-            lasteMove = 'a';
+            
+            if( lastMove && lastMove !== 'a' ) {
+                playerOneMove.push('a');
+            }
+            
+            lastMove = 'a';
             break;
 
         case 'd':
             keys.d.pressed = true;
-            lasteMove = 'd';
+
+            if( lastMove && lastMove !== 'd' ) {
+                playerOneMove.push('d');
+            }
+
+            lastMove = 'd';
             break;
 
         case 'w':
@@ -129,12 +146,22 @@ document.addEventListener('keydown', (event) => {
 
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true;
-            lasteMove = 'ArrowLeft';
+
+            if( lastMove && lastMove !== 'ArrowLeft' ) {
+                playerTwoMove.push('ArrowLeft');
+            }
+
+            lastMove = 'ArrowLeft';
             break;
 
         case 'ArrowRight':
             keys.ArrowRight.pressed = true;
-            lasteMove = 'ArrowRight';
+
+            if( lastMove && lastMove !== 'ArrowRight' ) {
+                playerTwoMove.push('ArrowRight');
+            }
+
+            lastMove = 'ArrowRight';
             break;
 
         case 'ArrowUp':
@@ -142,18 +169,34 @@ document.addEventListener('keydown', (event) => {
             break;
 
     }
-
-    console.log(event.key);
 });
+
 
 document.addEventListener('keyup', (event) => {
     switch (event.key) {
+
         case 'a':
+            
             keys.a.pressed = false;
+            poppedMove = playerOneMove.pop();
+
+            if( playerOneMove.length != 0 ) {
+                lastMove = 'd';
+                keys.d.pressed = true;
+            }
+
             break;
 
         case 'd':
+
             keys.d.pressed = false;
+            poppedMove = playerOneMove.pop();
+
+            if( playerOneMove.length != 0 ) {
+                lastMove = 'a'
+                keys.a.pressed = true;
+            }
+
             break;
 
         case 'w':
@@ -162,18 +205,28 @@ document.addEventListener('keyup', (event) => {
         
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = false;
+            poppedMove = playerTwoMove.pop();
+
+            if( playerTwoMove.length != 0 ) {
+                lastMove = 'ArrowRight';
+                keys.ArrowRight.pressed = true;
+            }
+
             break;
 
         case 'ArrowRight':
             keys.ArrowRight.pressed = false;
+            poppedMove = playerTwoMove.pop();
+
+            if( playerTwoMove.length != 0 ) {
+                lastMove = 'ArrowLeft';
+                keys.ArrowLeft.pressed = true;
+            }
             break;
 
         case 'ArrowUp':
             keys.ArrowUp.pressed = false;
             break;
-
-        
+ 
     }
-
-    console.log(event.key);
 });
