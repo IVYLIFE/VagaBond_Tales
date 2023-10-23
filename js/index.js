@@ -4,7 +4,6 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth - 10;
 canvas.height = window.innerHeight - 10;
 
-
 const keys = {
     a: { pressed: false },
     d: { pressed: false },
@@ -15,156 +14,206 @@ const keys = {
     ArrowUp: { pressed: false },
 };
 
-let lastMove1_H;
-let lastMove2_H;
 
-let playerOneMove_H = [];
-let playerTwoMove_H = [];
+let isGameStarted = false;
+const gameOption = document.querySelector('.gameOption');
+
+const startGameButton = document.querySelector('#startGame');
+const playAgainButton = document.querySelector('#playAgain');
+
+const gameInfo = document.querySelector('.gameInfoContainer');
+const players = document.querySelector('.players');
+
+const endMessage = document.querySelector('#endGameMessage');
+const result = document.querySelector('#result')
+const startMessage = document.querySelector('#startGameMessage');
+
+const player1Health = document.querySelector('#playerOne .healthBar');
+const player2Health = document.querySelector('#playerTwo .healthBar');
 
 let lastMove_V;
-
-let playerOneMove_V = [];
-let playerTwoMove_V = [];
-
-let count1 = 1;
-let count2 = 1;
 const gravity = 0.2;
 
-class Player {
-    constructor({ position, velocity }, offset) {
-        this.position = position;
-        this.velocity = velocity;
-        this.width = 40;
-        this.height = 180;
-        this.isAttacking = false;
-        this.health = 100;
-        this.offset = offset;
-        this.isAttacking = false;
-        this.doubleJump = false;
-        this.inAir = false;
 
-        // this.color = color;
+
+
+startGameButton.addEventListener('click', () => {
+    startMessage.classList.add('hidden');
+    gameInfo.classList.remove('hidden');
+    players.classList.remove('hidden');
+    isGameStarted = true;
+
+
+    startAnimation();
+
+
+})
+
+playAgainButton.addEventListener('click', () => {
+    endMessage.classList.add('hidden');
+    gameInfo.classList.remove('hidden');
+    players.classList.remove('hidden');
+    isGameStarted = true;
+
+    window.location.reload();
+    startAnimation();
+})
+
+
+const showHealth = () => {
+
+    if (player1.health <= 0) {
+        isGameStarted = false;
+        result.textContent = 'Player Two Wins';
+        endMessage.classList.remove('hidden')
+        // window.location.reload();
     }
 
-    draw() {
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-        let attackBox = {
-            x: this.position.x + this.width,
-            y: this.position.y,
-            width: 80,
-            height: 30
-        }
-
-        ctx.fillStyle = 'red';
-
-        if (this.isAttacking) {
-            if (this.offset === 1) {
-                ctx.fillRect(attackBox.x, attackBox.y, attackBox.width, attackBox.height);
-            } else {
-                ctx.fillRect(this.position.x - attackBox.width, attackBox.y, attackBox.width, attackBox.height);
-            }
-        }
-
-        this.isAttacking = false;
-
+    if (player2.health <= 0) {
+        isGameStarted = false;
+        result.textContent = 'Player One Wins';
+        endMessage.classList.remove('hidden')
+        // window.location.reload();
     }
 
-    update() {
-        this.draw();
-
-        this.position.x += this.velocity.x;
-        if (this.position.y + this.height + this.velocity.y > canvas.height) {
-            this.velocity.y = 0;
-        } else {
-            this.velocity.y += gravity;
-            this.position.y += this.velocity.y;
-        }
-    }
+    player1Health.style.width = `${player1.health}%`;
+    player2Health.style.width = `${player2.health}%`;
 }
 
 
-let playerOne = new Player(
+let player1 = new Player(
     {
-        position: { x: 600, y: 0 },
+        position: { x: 200, y: 0 },
         velocity: { x: 0, y: 0 }
     },
-    offset = 1
+    offset = 1,
+    'blue'
 );
 
-let playerTwo = new Player(
+let player2 = new Player(
     {
-        position: { x: 1250, y: 0 },
+        position: { x: 750, y: 0 },
         velocity: { x: 0, y: 0 }
     },
     offset = -1
 );
 
-console.log(playerOne);
-console.log(playerTwo);
+console.log(player1);
+console.log(player2);
 
 
 
+showHealth();
 const startAnimation = () => {
     window.requestAnimationFrame(startAnimation);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    playerOne.update();
-    playerTwo.update();
+    player1.update();
+    player2.update();
+
+    if (isGameStarted) {
+
+        // ================================== player1 ==================================
+        player1.velocity.x = 0;
+
+        if (keys.d.pressed &&
+            player1.lastMove === 'd' &&
+            player1.position.x + player1.width < canvas.width) {
+            player1.velocity.x = 3;
+        }
+
+        if (keys.a.pressed &&
+            player1.lastMove === 'a' &&
+            player1.position.x > 0) {
+            player1.velocity.x = -3;
+        }
 
 
-    // ================================== playerOne ==================================
-    playerOne.velocity.x = 0;
+        if (keys.w.pressed) {
+            player1.inAir = true;
 
-    if (keys.d.pressed && lastMove1_H === 'd' && playerOne.position.x + playerOne.width < canvas.width) { playerOne.velocity.x = 3; }
-    if (keys.a.pressed && lastMove1_H === 'a' && playerOne.position.x > 0) { playerOne.velocity.x = -3; }
-    if (keys.w.pressed) {
-        playerOne.inAir = true; 
+            if (player1.position.y + player1.height >= canvas.height) { player1.velocity.y = -10; }
+            if (player1.doubleJump && player1.position.y + player1.height <= canvas.height) {
+                player1.velocity.y = -10;
+                player1.doubleJump = false;
+            }
+        }
 
-        if(playerOne.position.y + playerOne.height >= canvas.height){ playerOne.velocity.y = -10; }
-        if( playerOne.doubleJump && playerOne.position.y + playerOne.height <= canvas.height){
-            playerOne.velocity.y = -10;
-            playerOne.doubleJump = false;
+        // Player1 Standing
+        if (Math.floor(player1.velocity.y + player1.position.y + player1.height) == canvas.height) {
+            player1.inAir = false;
+            player1.move_V.splice(0, player1.move_V.length);
+            player1.count = 1;
+        }
+
+        if (player1.isAttacking &&
+            player1.attackBox.position.x + player1.attackBox.width >= player2.position.x &&
+            player1.attackBox.position.x <= player2.position.x + player2.width &&
+            player1.attackBox.position.y + player1.attackBox.height >= player2.position.y &&
+            player1.attackBox.position.y <= player2.position.y + player2.height) {
+            player2.health -= 10;
+            showHealth();
+            console.log('Player One Attacked Player Two');
+            player1.isAttacking = false;
+        }
+
+        if (player1.position.x > player2.position.x + player2.width) {
+            player1.offset = -1;
+        } else {
+            player1.offset = 1;
+        }
+
+
+
+
+
+        // ================================== player2 ==================================
+
+        player2.velocity.x = 0;
+
+        if (keys.ArrowRight.pressed && player2.lastMove === 'ArrowRight' && player2.position.x + player2.width < canvas.width) { player2.velocity.x = 3; }
+        if (keys.ArrowLeft.pressed && player2.lastMove === 'ArrowLeft' && player2.position.x > 0) { player2.velocity.x = -3; }
+        if (keys.ArrowUp.pressed) {
+            player2.inAir = true;
+
+            if (player2.position.y + player2.height >= canvas.height) { player2.velocity.y = -10; }
+            if (player2.doubleJump && player2.position.y + player2.height <= canvas.height) {
+                player2.velocity.y = -10;
+                player2.doubleJump = false;
+            }
+        }
+
+        // Player2 Standing
+        if (Math.floor(player2.velocity.y + player2.position.y + player2.height) == canvas.height) {
+            player2.inAir = false;
+            player2.move_V.splice(0, player2.move_V.length);
+            player2.count = 1;
+        }
+
+        if (player2.isAttacking &&
+            player2.attackBox.position.x + player2.attackBox.width >= player1.position.x &&
+            player2.attackBox.position.x <= player1.position.x + player1.width &&
+            player2.attackBox.position.y + player2.attackBox.height >= player1.position.y &&
+            player2.attackBox.position.y <= player1.position.y + player1.height) {
+            player1.health -= 10;
+            showHealth();
+            console.log('Player Two Attacked Player One');
+            player2.isAttacking = false;
+        }
+
+        if (player2.position.x > player1.position.x + player1.width) {
+            player2.offset = -1;
+        } else {
+            player2.offset = 1;
         }
     }
 
-    // Player1 Standing
-    if( Math.floor( playerOne.velocity.y + playerOne.position.y + playerOne.height) == canvas.height) {
-        playerOne.inAir = false;
-        playerOneMove_V.splice(0, playerOneMove_V.length);
-        count1 = 1;
-    }
 
-
-
-    // ================================== playerTwo ==================================
-
-    playerTwo.velocity.x = 0;
-
-    if (keys.ArrowRight.pressed && lastMove2_H === 'ArrowRight' && playerTwo.position.x + playerTwo.width < canvas.width) { playerTwo.velocity.x = 3; }
-    if (keys.ArrowLeft.pressed && lastMove2_H === 'ArrowLeft' && playerTwo.position.x > 0) { playerTwo.velocity.x = -3; }
-    if (keys.ArrowUp.pressed) {
-        playerTwo.inAir = true; 
-
-        if(playerTwo.position.y + playerTwo.height >= canvas.height){ playerTwo.velocity.y = -10; }
-        if( playerTwo.doubleJump && playerTwo.position.y + playerTwo.height <= canvas.height){
-            playerTwo.velocity.y = -10;
-            playerTwo.doubleJump = false;
-        }
-    }
-
-    // Player2 Standing
-    if( Math.floor( playerTwo.velocity.y + playerTwo.position.y + playerTwo.height) == canvas.height) {
-        playerTwo.inAir = false;
-        playerTwoMove_V.splice(0, playerTwoMove_V.length);
-        count2 = 1;
-    }
 
 }
 
-startAnimation();
-
 document.addEventListener('keydown', (event) => {
+    console.log(event.key);
+
     switch (event.key) {
 
 
@@ -174,39 +223,40 @@ document.addEventListener('keydown', (event) => {
         case 'A':
             keys.a.pressed = true;
 
-            if (lastMove1_H && lastMove1_H !== 'a') {
-                playerOneMove_H.push('a');
+            if (player1.lastMove !== 'a') {
+                player1.move_H.push('a');
             }
 
-            lastMove1_H = 'a';
+            player1.lastMove = 'a';
             break;
 
         case 'd':
         case 'D':
             keys.d.pressed = true;
 
-            if (lastMove1_H && lastMove1_H !== 'd') {
-                playerOneMove_H.push('d');
+            if (player1.lastMove !== 'd') {
+                player1.move_H.push('d');
             }
 
-            lastMove1_H = 'd';
+            player1.lastMove = 'd';
             break;
 
         case 'w':
         case 'W':
             keys.w.pressed = true;
 
-            if (playerOneMove_V.length < 2 && lastMove_V !== 'w' && count1 == 1) { playerOneMove_V.push('w'); }
-            if (playerOneMove_V.length == 2) { 
-                playerOne.doubleJump = true; 
-                count1 = 0; 
-                playerOneMove_V.splice(0, playerOneMove_V.length);
+            if (player1.move_V.length < 2 && lastMove_V !== 'w' && player1.count == 1) { player1.move_V.push('w'); }
+            if (player1.move_V.length == 2) {
+                player1.doubleJump = true;
+                player1.count = 0;
+                player1.move_V.splice(0, player1.move_V.length);
             }
             lastMove_V = 'w';
             break;
 
         case ' ':
-            playerOne.isAttacking = true;
+            player1.isAttacking = true;
+            player1.attack();
             break;
 
 
@@ -217,46 +267,46 @@ document.addEventListener('keydown', (event) => {
         case '4':
             keys.ArrowLeft.pressed = true;
 
-            if (lastMove2_H && lastMove2_H !== 'ArrowLeft') {
-                playerTwoMove_H.push('ArrowLeft');
+            if (player2.lastMove !== 'ArrowLeft') {
+                player2.move_H.push('ArrowLeft');
             }
 
-            lastMove2_H = 'ArrowLeft';
+            player2.lastMove = 'ArrowLeft';
             break;
 
         case 'ArrowRight':
         case '6':
             keys.ArrowRight.pressed = true;
 
-            if (lastMove2_H && lastMove2_H !== 'ArrowRight') {
-                playerTwoMove_H.push('ArrowRight');
+            if (player2.lastMove !== 'ArrowRight') {
+                player2.move_H.push('ArrowRight');
             }
 
-            lastMove2_H = 'ArrowRight';
+            player2.lastMove = 'ArrowRight';
             break;
 
         case 'ArrowUp':
         case '8':
             keys.ArrowUp.pressed = true;
 
-            if (playerTwoMove_V.length < 2 && lastMove_V !== 'ArrowUp' && count2 == 1 ) { playerTwoMove_V.push('ArrowUp'); }
-            if (playerTwoMove_V.length == 2) { 
-                playerTwo.doubleJump = true; 
-                count2 = 0; 
-                playerOneMove_V.splice(0, playerOneMove_V.length);
+            if (player2.move_V.length < 2 && lastMove_V !== 'ArrowUp' && player2.count == 1) { player2.move_V.push('ArrowUp'); }
+            if (player2.move_V.length == 2) {
+                player2.doubleJump = true;
+                player2.count = 0;
+                player2.move_V.splice(0, player2.move_V.length);
             }
 
             lastMove_V = 'ArrowUp';
             break;
 
         case 'k':
-            playerTwo.isAttacking = true;
+            player2.isAttacking = true;
+            player2.attack();
             break;
 
 
     }
 });
-
 
 document.addEventListener('keyup', (event) => {
     switch (event.key) {
@@ -267,10 +317,10 @@ document.addEventListener('keyup', (event) => {
         case 'a':
         case 'A':
             keys.a.pressed = false;
-            playerOneMove_H.pop();
+            player1.move_H.pop();
 
-            if (playerOneMove_H.length != 0) {
-                lastMove1_H = 'd';
+            if (player1.move_H.length != 0) {
+                player1.lastMove = 'd';
                 keys.d.pressed = true;
             }
 
@@ -279,10 +329,10 @@ document.addEventListener('keyup', (event) => {
         case 'd':
         case 'D':
             keys.d.pressed = false;
-            playerOneMove_H.pop();
+            player1.move_H.pop();
 
-            if (playerOneMove_H.length != 0) {
-                lastMove1_H = 'a'
+            if (player1.move_H.length != 0) {
+                player1.lastMove = 'a'
                 keys.a.pressed = true;
             }
 
@@ -295,7 +345,7 @@ document.addEventListener('keyup', (event) => {
             break;
 
         case ' ':
-            playerOne.isAttacking = false;
+            player1.isAttacking = false;
             break;
 
         // ======================== Player Two ========================
@@ -303,10 +353,10 @@ document.addEventListener('keyup', (event) => {
         case 'ArrowLeft':
         case '4':
             keys.ArrowLeft.pressed = false;
-            playerTwoMove_H.pop();
+            player2.move_H.pop();
 
-            if (playerTwoMove_H.length != 0) {
-                lastMove2_H = 'ArrowRight';
+            if (player2.move_H.length != 0) {
+                player2.lastMove = 'ArrowRight';
                 keys.ArrowRight.pressed = true;
             }
 
@@ -315,10 +365,10 @@ document.addEventListener('keyup', (event) => {
         case 'ArrowRight':
         case '6':
             keys.ArrowRight.pressed = false;
-            playerTwoMove_H.pop();
+            player2.move_H.pop();
 
-            if (playerTwoMove_H.length != 0) {
-                lastMove2_H = 'ArrowLeft';
+            if (player2.move_H.length != 0) {
+                player2.lastMove = 'ArrowLeft';
                 keys.ArrowLeft.pressed = true;
             }
             break;
@@ -331,7 +381,7 @@ document.addEventListener('keyup', (event) => {
 
         case 'k':
         case 'K':
-            playerTwo.isAttacking = false;
+            player2.isAttacking = false;
             break;
 
     }
