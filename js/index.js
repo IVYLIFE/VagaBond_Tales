@@ -1,221 +1,187 @@
+console.log('index.js loaded');
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth - 10;
-canvas.height = window.innerHeight - 10;
+canvas.width = 1400;
+canvas.height = 785;
+
+
+// ==================== Variables ==================== //
 
 const keys = {
     a: { pressed: false },
     d: { pressed: false },
-    w: { pressed: false },
 
     ArrowLeft: { pressed: false },
     ArrowRight: { pressed: false },
-    ArrowUp: { pressed: false },
 };
 
-
-let isGameStarted = false;
-const gameOption = document.querySelector('.gameOption');
-
-const startGameButton = document.querySelector('#startGame');
-const playAgainButton = document.querySelector('#playAgain');
-
-const gameInfo = document.querySelector('.gameInfoContainer');
-const players = document.querySelector('.players');
-
-const endMessage = document.querySelector('#endGameMessage');
-const result = document.querySelector('#result')
-const startMessage = document.querySelector('#startGameMessage');
-
-const player1Health = document.querySelector('#playerOne .healthBar');
-const player2Health = document.querySelector('#playerTwo .healthBar');
-
-let lastMove_V;
+const landingHeight = canvas.height - 130;
+const velocity_X = 2.5;
+const velocity_Y = 8.5;
 const gravity = 0.2;
 
 
+const gameOption = document.querySelector('.gameOption');
+const startGameButton = document.querySelector('#startGame');
+const playAgainButton = document.querySelector('#playAgain');
+
+const imageSources = ['./assets/background.png', './assets/shop.png', 'assets/Miyamoto Mushashi/Idle.png']; // List of image sources
+const images = {};
 
 
-startGameButton.addEventListener('click', () => {
-    startMessage.classList.add('hidden');
-    gameInfo.classList.remove('hidden');
-    players.classList.remove('hidden');
-    isGameStarted = true;
-
-
-    startAnimation();
-
-
-})
-
-playAgainButton.addEventListener('click', () => {
-    endMessage.classList.add('hidden');
-    gameInfo.classList.remove('hidden');
-    players.classList.remove('hidden');
-    isGameStarted = true;
-
-    window.location.reload();
-    startAnimation();
-})
-
-
-const showHealth = () => {
-
-    if (player1.health <= 0) {
-        isGameStarted = false;
-        result.textContent = 'Player Two Wins';
-        endMessage.classList.remove('hidden')
-        // window.location.reload();
-    }
-
-    if (player2.health <= 0) {
-        isGameStarted = false;
-        result.textContent = 'Player One Wins';
-        endMessage.classList.remove('hidden')
-        // window.location.reload();
-    }
-
-    player1Health.style.width = `${player1.health}%`;
-    player2Health.style.width = `${player2.health}%`;
+function preloadImages(sources) {
+  sources.forEach(source => {
+    const image = new Image();
+    image.src = source;
+    images[source] = image;
+  });
 }
 
+preloadImages(imageSources);
+console.log(images)
 
-let player1 = new Player(
+// =================================================== //
+// =================================================== //
+// =================================================== //
+
+
+
+
+// =================== Game Elements ================= //
+
+const backGroundSprite = new Sprite({
+    position: { x: 0, y: 0 },
+    imgSrc: './assets/background.png',
+    animate: false,
+})
+
+const shopSprite = new Sprite({
+    position: { x: 880, y: landingHeight - 445 },
+    imgSrc: './assets/shop.png',
+    animate: true,
+    scale: 3.5,
+    maxFrames: 6,
+    frameHold: 25,
+})
+
+
+const player1 = new Player(
     {
-        position: { x: 200, y: 0 },
-        velocity: { x: 0, y: 0 }
-    },
-    offset = 1,
-    'blue'
+        position: { x: 100, y: 0 },
+        spriteOffset: {
+            x: 180,
+            y: 145,
+        },
+        imgSrc: 'assets/Miyamoto Mushashi/Idle.png',
+        animate: true,
+        scale: 2.5,
+        maxFrames: 8,
+        frameHold: 10,
+        velocity: { x: 0, y: 0 },
+        attackOffset: 1,
+        playerOffset: 1,
+        sprites: {
+            idle: {
+              imageSrc: './assets/Miyamoto Mushashi/Idle.png',
+              maxFrames: 8
+            },
+            run: {
+              imageSrc: './assets/Miyamoto Mushashi/Run.png',
+              maxFrames: 8
+            },
+            jump: {
+              imageSrc: './assets/Miyamoto Mushashi/Jump.png',
+              maxFrames: 2
+            },
+            fall: {
+              imageSrc: './assets/Miyamoto Mushashi/Fall.png',
+              maxFrames: 2
+            },
+            attack1: {
+              imageSrc: './assets/Miyamoto Mushashi/Attack1.png',
+              maxFrames: 6
+            },
+            takeHit: {
+              imageSrc: './assets/Miyamoto Mushashi/Take Hit - white silhouette.png',
+              maxFrames: 4
+            },
+            death: {
+              imageSrc: './assets/Miyamoto Mushashi/Death.png',
+              maxFrames: 6
+            }
+        },
+    }
 );
 
-let player2 = new Player(
+const player2 = new Player(
     {
-        position: { x: 750, y: 0 },
-        velocity: { x: 0, y: 0 }
-    },
-    offset = -1
+        position: { x: 800, y: 0 },
+        spriteOffset: {
+            x: 180,
+            y: 155,
+        },
+        imgSrc: 'assets/Kojiro Sasaki/Idle.png',
+        animate: true,
+        scale: 2.5,
+        maxFrames: 4,
+        frameHold: 15,
+        velocity: { x: 0, y: 0 },
+        attackOffset: -1,
+        playerOffset: -1,
+        color: 'cyan',
+        sprites: {
+            idle: {
+              imageSrc: './assets/Kojiro Sasaki/Idle.png',
+              maxFrames: 4
+            },
+            run: {
+              imageSrc: './assets/Kojiro Sasaki/Run.png',
+              maxFrames: 8
+            },
+            jump: {
+              imageSrc: './assets/Kojiro Sasaki/Jump.png',
+              maxFrames: 2
+            },
+            fall: {
+              imageSrc: './assets/Kojiro Sasaki/Fall.png',
+              maxFrames: 2
+            },
+            attack1: {
+              imageSrc: './assets/Kojiro Sasaki/Attack1.png',
+              maxFrames: 4
+            },
+            takeHit: {
+              imageSrc: './assets/Miyamoto Mushashi/Take Hit - white silhouette.png',
+              maxFrames: 3
+            },
+            death: {
+              imageSrc: './assets/Kojiro Sasaki/Death.png',
+              maxFrames: 7
+            },
+        },
+    }
 );
+
 
 console.log(player1);
-console.log(player2);
 
 
-
-showHealth();
-const startAnimation = () => {
-    window.requestAnimationFrame(startAnimation);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    player1.update();
-    player2.update();
-
-    if (isGameStarted) {
-
-        // ================================== player1 ==================================
-        player1.velocity.x = 0;
-
-        if (keys.d.pressed &&
-            player1.lastMove === 'd' &&
-            player1.position.x + player1.width < canvas.width) {
-            player1.velocity.x = 3;
-        }
-
-        if (keys.a.pressed &&
-            player1.lastMove === 'a' &&
-            player1.position.x > 0) {
-            player1.velocity.x = -3;
-        }
-
-
-        if (keys.w.pressed) {
-            player1.inAir = true;
-
-            if (player1.position.y + player1.height >= canvas.height) { player1.velocity.y = -10; }
-            if (player1.doubleJump && player1.position.y + player1.height <= canvas.height) {
-                player1.velocity.y = -10;
-                player1.doubleJump = false;
-            }
-        }
-
-        // Player1 Standing
-        if (Math.floor(player1.velocity.y + player1.position.y + player1.height) == canvas.height) {
-            player1.inAir = false;
-            player1.move_V.splice(0, player1.move_V.length);
-            player1.count = 1;
-        }
-
-        if (player1.isAttacking &&
-            player1.attackBox.position.x + player1.attackBox.width >= player2.position.x &&
-            player1.attackBox.position.x <= player2.position.x + player2.width &&
-            player1.attackBox.position.y + player1.attackBox.height >= player2.position.y &&
-            player1.attackBox.position.y <= player2.position.y + player2.height) {
-            player2.health -= 10;
-            showHealth();
-            console.log('Player One Attacked Player Two');
-            player1.isAttacking = false;
-        }
-
-        if (player1.position.x > player2.position.x + player2.width) {
-            player1.offset = -1;
-        } else {
-            player1.offset = 1;
-        }
+// =================================================== //
+// =================================================== //
+// =================================================== //
 
 
 
 
 
-        // ================================== player2 ==================================
-
-        player2.velocity.x = 0;
-
-        if (keys.ArrowRight.pressed && player2.lastMove === 'ArrowRight' && player2.position.x + player2.width < canvas.width) { player2.velocity.x = 3; }
-        if (keys.ArrowLeft.pressed && player2.lastMove === 'ArrowLeft' && player2.position.x > 0) { player2.velocity.x = -3; }
-        if (keys.ArrowUp.pressed) {
-            player2.inAir = true;
-
-            if (player2.position.y + player2.height >= canvas.height) { player2.velocity.y = -10; }
-            if (player2.doubleJump && player2.position.y + player2.height <= canvas.height) {
-                player2.velocity.y = -10;
-                player2.doubleJump = false;
-            }
-        }
-
-        // Player2 Standing
-        if (Math.floor(player2.velocity.y + player2.position.y + player2.height) == canvas.height) {
-            player2.inAir = false;
-            player2.move_V.splice(0, player2.move_V.length);
-            player2.count = 1;
-        }
-
-        if (player2.isAttacking &&
-            player2.attackBox.position.x + player2.attackBox.width >= player1.position.x &&
-            player2.attackBox.position.x <= player1.position.x + player1.width &&
-            player2.attackBox.position.y + player2.attackBox.height >= player1.position.y &&
-            player2.attackBox.position.y <= player1.position.y + player1.height) {
-            player1.health -= 10;
-            showHealth();
-            console.log('Player Two Attacked Player One');
-            player2.isAttacking = false;
-        }
-
-        if (player2.position.x > player1.position.x + player1.width) {
-            player2.offset = -1;
-        } else {
-            player2.offset = 1;
-        }
-    }
 
 
-
-}
-
-document.addEventListener('keydown', (event) => {
+const handleKeyDown = (event) => {
     console.log(event.key);
 
     switch (event.key) {
-
 
         // ======================== Player One ========================
 
@@ -243,22 +209,15 @@ document.addEventListener('keydown', (event) => {
 
         case 'w':
         case 'W':
-            keys.w.pressed = true;
-
-            if (player1.move_V.length < 2 && lastMove_V !== 'w' && player1.count == 1) { player1.move_V.push('w'); }
-            if (player1.move_V.length == 2) {
-                player1.doubleJump = true;
-                player1.count = 0;
-                player1.move_V.splice(0, player1.move_V.length);
+            player1.jumpCount++;
+            if (player1.jumpCount <= 2) {
+                player1.velocity.y = -velocity_Y;
             }
-            lastMove_V = 'w';
             break;
 
         case ' ':
-            player1.isAttacking = true;
             player1.attack();
             break;
-
 
 
         // ======================== Player Two ======================== 
@@ -287,30 +246,24 @@ document.addEventListener('keydown', (event) => {
 
         case 'ArrowUp':
         case '8':
-            keys.ArrowUp.pressed = true;
-
-            if (player2.move_V.length < 2 && lastMove_V !== 'ArrowUp' && player2.count == 1) { player2.move_V.push('ArrowUp'); }
-            if (player2.move_V.length == 2) {
-                player2.doubleJump = true;
-                player2.count = 0;
-                player2.move_V.splice(0, player2.move_V.length);
+            player2.jumpCount++;
+            if (player2.jumpCount <= 2) {
+                player2.velocity.y = -velocity_Y;
             }
-
-            lastMove_V = 'ArrowUp';
             break;
 
         case 'k':
-            player2.isAttacking = true;
+        case 'K':
+        case 'ArrowDown':
+        case '5':
             player2.attack();
             break;
 
-
     }
-});
+}
 
-document.addEventListener('keyup', (event) => {
+const handleKeyUp = (event) => {
     switch (event.key) {
-
 
         // ======================== Player One ========================
 
@@ -338,16 +291,9 @@ document.addEventListener('keyup', (event) => {
 
             break;
 
-        case 'w':
-        case 'W':
-            keys.w.pressed = false;
-            lastMove_V = '';
-            break;
-
         case ' ':
             player1.isAttacking = false;
             break;
-
         // ======================== Player Two ========================
 
         case 'ArrowLeft':
@@ -373,18 +319,124 @@ document.addEventListener('keyup', (event) => {
             }
             break;
 
-        case 'ArrowUp':
-        case '8':
-            keys.ArrowUp.pressed = false;
-            lastMove_V = '';
-            break;
-
         case 'k':
         case 'K':
+        case 'ArrowDown':
+        case '5': 
             player2.isAttacking = false;
             break;
-
     }
-});
+}
+
+const startAnimation = () => {
+
+    function updateGame() {
+        // Update player positions, check collisions, handle game logic, etc.
+        if (isGameStarted) {
+            player1.velocity.x = 0;
+            player2.velocity.x = 0;
+
+            // ================================== player1 ==================================
+            if (keys.d.pressed && player1.lastMove === 'd' && player1.position.x + player1.width < canvas.width) {
+                player1.velocity.x = velocity_X;
+                player1.changeSprite('run');
+            } else if (keys.a.pressed && player1.lastMove === 'a' && player1.position.x > 0) {
+                player1.velocity.x = -velocity_X;
+                player1.changeSprite('run');
+            } else {
+                player1.changeSprite('idle');
+            }
+
+            if (player1.velocity.y < 0) {
+                player1.changeSprite('jump')
+            } else if (player1.velocity.y > 0) {
+                player1.changeSprite('fall')
+            }
+
+            if (player1.isAttacking && collision({ player: player1, enemy: player2 })) {
+                player1.isAttacking = false;
+                player2.health -= 10;
+                player2Health.style.width = `${player2.health}%`;
+            }
 
 
+            // ================================== player2 ==================================
+            if (keys.ArrowRight.pressed && player2.lastMove === 'ArrowRight' && player2.position.x + player2.width < canvas.width) {
+                player2.velocity.x = velocity_X;
+                player2.changeSprite('run')
+            } else if (keys.ArrowLeft.pressed && player2.lastMove === 'ArrowLeft' && player2.position.x > 0) {
+                player2.velocity.x = -velocity_X;
+                player2.changeSprite('run')
+            } else {
+                player2.changeSprite('idle')
+            }
+
+
+            if (player2.velocity.y < 0) {
+                player2.changeSprite('jump')
+            } else if (player2.velocity.y > 0) {
+                player2.changeSprite('fall')
+            }
+
+            if (player2.isAttacking && collision({ player: player2, enemy: player1 })) {
+                player2.isAttacking = false;
+                player1.health -= 10;
+                player1Health.style.width = `${player1.health}%`;
+            }
+
+
+            playerStanding(player1);     // Player1 Standing
+            changeAttackDirection({ player: player1, enemy: player2 });
+
+            playerStanding(player2);        // Player2 Standing
+            changeAttackDirection({ player: player2, enemy: player1 });
+
+
+            // ================================== Game Over ==================================
+            if (player1.health <= 0 || player2.health <= 0) {
+                gameOver({ player: player1, enemy: player2, countDownId });
+                return;
+            }
+        }
+    }
+
+    function renderGame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        backGroundSprite.update();
+        shopSprite.update();
+        
+        if(showPlayers){
+            player1.update();
+            player2.update();
+        }
+
+
+        // Continue the game loop
+        animationId = requestAnimationFrame(() => {
+            updateGame();
+            renderGame();
+        });
+    }
+
+    renderGame();
+}
+
+window.onload = function () {
+    startAnimation();
+}
+
+gameStart();
+startGameButton.addEventListener('click', gameStart)
+playAgainButton.addEventListener('click', () => {
+    window.location.reload();
+    showPlayers = false
+})
+
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
+
+const gameEnded = () => {
+    window.removeEventListener('keydown', handleKeyDown);
+    window.removeEventListener('keyup', handleKeyUp);
+};

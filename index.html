@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VagaBong Tales</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="./index.css">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
 </head>
+
 <body>
 
-    <div class="gameInfoContainer hidden">
+    <div id="game">
 
-        <div id="playerOne" class="healthContainer"> 
-            <div class="healthBar"></div>
+        <div class="gameStatus hidden">
+
+            <div id="player1" class="healthContainer">
+                <div class="healthBar"></div>
+            </div>
+
+
+            <div id="clock"></div>
+
+            <div id="player2" class="healthContainer">
+                <div class="healthBar"></div>
+            </div>
+
         </div>
 
-        <div id="clock"> 90 </div>
-
-        <div id="playerTwo" class="healthContainer">
-            <div class="healthBar"></div>
+        <div class="playersName hidden">
+            <p class="player p1">Player 1</p>
+            <p class="player p2">Player 2</p>
         </div>
+
+        <div class="gameOption">
+            <div id="startGameMessage">
+                <div id="startGame" class="btn"> Start Game </div>
+            </div>
+
+            <div id="endGameMessage" class="hidden">
+                <p id="result">Result</p>
+                <div id="playAgain" class="btn">Play Again</div>
+            </div>
+        </div>
+
+        <canvas id="canvas"></canvas>
     </div>
-
-
-    <div class="players hidden">
-        <p class="player1" >Player One</p>
-        <p class="player2">Player Two</p>
-    </div>
-
-    <div id="gameOption" data-game-in-progress="false">
-        <div id="startGameMessage">
-            <button id="startGame"> Start Game </button>
-        </div>
-
-        <div id="endGameMessage" class="hidden">
-            <p id="result">Result</p>
-            <button id="playAgain">Play Again</button>
-        </div>
-    </div>
-
-    <canvas id="canvas"></canvas>
 
     <script src="./js/utils.js"></script>
-    <!-- <script src="./help.js"></script> -->
     <script src="./js/index.js"></script>
-    
+    <!-- <script src="./main.js"></script> -->
+
+
 </body>
+
 </html>

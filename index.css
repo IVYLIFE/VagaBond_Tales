@@ -1,73 +1,99 @@
-*{
+@font-face {
+    font-family: 'Inter';
+    src: url('./assets/fonts/Inter-Regular.ttf');
+    /* src: url('./assets/fonts/Roboto-Regular.ttf'); */
+  }
+  
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body{
+  }
+  
+  body {
     background-color: red;
-    display: flex;
-    justify-content: center;
-    position: relative;
+    font-family: 'Inter';
     /* min-width: 1200px; */
-}
-
-/* =========== Game Canvas =========== */
-#canvas{
+  }
+  
+  #game {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* =========== Game Canvas =========== */
+  #canvas {
     /* min-width: 1200px; */
     background-color: bisque;
-}
-
-
-
-/* =========== Game Info =========== */
-.gameInfoContainer, .players{
+  }
+  
+  /* =========== Game Info =========== */
+  .gameStatus {
     position: absolute;
-    /* border: 1px solid green; */
-    width: 80%;
-    top: 15px;
-    display: flex;
-    align-items: center;
-}
-
-#clock{
-    /* border: 1px dotted black; */
-    background-color: rgb(158, 153, 153);
-    width: 150px;
-    font-size: 2.5rem;
-    display: flex;
-    padding: 1rem 1.5rem;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.healthContainer{
-    /* border: 1px solid black; */
-    background-color: blue;
     width: 100%;
     display: flex;
-    height: 45px;
-}
-
-.healthBar{
-    background-color: rgb(248, 93, 93);
-}
-
-#playerOne{
-    flex-direction: row-reverse;
-}
-
-.players{
-    top: 85px;
-    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  
+  #clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    background-color: black;
+    width: 100px;
+    height: 65px;
+    flex-shrink: 0;
+    color: white;
+    border: 5px solid white;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  }
+  
+  .player{
+    width: fit-content;
+    position: absolute;
+    padding: .4rem;
+    top: 80px;
     font-size: 1.2rem;
-}
-
-
-/* =========== Game Result =========== */
-#gameOption{
+  }
+  
+  .p1{
+    left: 15px;
+  }
+  
+  .p2{
+    right: 15px;
+  }
+  
+  
+  .healthContainer {
+    background: blue;
+    width: 100%;
+    display: flex;
+    height: 50px;
+    position: relative;
+    border-top: 5px solid white;
+    border-bottom: 5px solid white;
+  }
+  
+  #player1 {
+    border-left: 5px solid white;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+  
+  #player2{
+      border-right: 5px solid white;
+  }
+  
+  .healthBar {
+    background: #818cf8;
+  }
+  
+  /* =========== Game Result =========== */
+  .gameOption {
     position: absolute;
     top: 40%;
     left: 50%;
@@ -77,43 +103,44 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .7rem;
+    gap: 0.7rem;
     border-radius: 4px;
-}
-
-#gameOption > div{
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  }
+  
+  .gameOption > div {
     width: 80%;
-} 
-
-#startGameMessage, #endGameMessage{
-    margin: .7rem;
-}
-
-#endGameMessage #result{
+  }
+  
+  #startGameMessage,
+  #endGameMessage {
+    margin: 0.7rem;
+  }
+  
+  #endGameMessage #result {
     font-size: 1.3rem;
     text-align: center;
     font-weight: bold;
-    margin-bottom: .7rem;
-}
-
-#gameOption button{
+    margin: 0.7rem 0 1.5rem;
+  }
+  
+  .gameOption .btn {
     width: 100%;
+    background-color: rgb(221, 235, 247);
     text-align: center;
-    padding: .5rem;
-    border: none;
-    outline: none;
+    padding: 0.5rem;
     border-radius: 4px;
     font-size: 1rem;
-    transition: .2s ease-in-out;
-}
-
-#gameOption button:active{
-    transform: scale(.95);
-}
-
-
-
-.hidden{
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .gameOption .btn:active {
+    transform: scale(0.95);
+  }
+  
+  .hidden {
     display: none;
-}
-
+  }
+  
