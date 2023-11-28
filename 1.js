@@ -48,9 +48,29 @@ class Sprite {
         this.frameHold = frameHold
         this.frameWidth = this.image.width / this.maxFrames
         this.frameHeight = this.image.height
+
+        this.imagesLoaded = false; // Flag to track image loading
+        this.loadSpriteImage();
+    }
+
+    loadSpriteImage() {
+        this.image = new Image();
+        this.image.src = this.imgSrc;
+
+        // Set up an onload callback to ensure the image is loaded before drawing
+        this.image.onload = () => {
+            this.imagesLoaded = true;
+            this.frameWidth = this.image.width / this.maxFrames;
+            this.frameHeight = this.image.height;
+            this.draw();
+        };
     }
 
     draw() {
+        if (!this.imagesLoaded) {
+            return;
+        }
+
         if (this.spriteOffset.dir == 1) {
             ctx.drawImage(
                 this.image,
@@ -76,11 +96,14 @@ class Sprite {
             );
             ctx.restore(); // Restore the last saved state
         }
+
     }
 
     update() {
-        this.draw()
-        this.changeFrame()
+        if (this.imagesLoaded) {
+            this.draw();
+            this.changeFrame();
+        }
     }
 
     changeFrame() {
@@ -155,6 +178,7 @@ class Player extends Sprite {
             }
         }
     }
+
 
     update() {
         this.draw()

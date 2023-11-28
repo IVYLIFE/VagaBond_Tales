@@ -27,18 +27,18 @@ const startGame = document.querySelector('#startGame');
 const playAgain = document.querySelector('#playAgain');
 
 const imageSources = [
-    './assets/background.png', 
-    './assets/shop.png', 
+    './assets/background.png',
+    './assets/shop.png',
     '../assets/charactersSprites/Miyamoto Mushashi/Idle.png'
 ];
 
 const characters = {
     'miyamoto': {
-        name : 'Miyamoto Mushashi',
+        name: 'Miyamoto Mushashi',
         imgSrc: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
         maxFrames: 8,
-        scale : 2,
-        frameHold: 10,
+        scale: 2.5,
+        frameHold: 15,
         animate: true,
         spriteOffset: {
             x: 185,
@@ -46,205 +46,205 @@ const characters = {
         },
         sprites: {
             idle: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
+                maxFrames: 8
             },
             run: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Run.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Run.png',
+                maxFrames: 8
             },
             jump: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Jump.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Jump.png',
+                maxFrames: 2
             },
             fall: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Fall.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Fall.png',
+                maxFrames: 2
             },
             attack1: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Attack1.png',
-              maxFrames: 6
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Attack1.png',
+                maxFrames: 6
             },
             takeHit: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Take Hit.png',
-              maxFrames: 4
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Take Hit.png',
+                maxFrames: 4
             },
             death: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Death.png',
-              maxFrames: 6
+                imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Death.png',
+                maxFrames: 6
             }
         },
     },
 
     'kojiro': {
-        name : 'Kojiro Sasaki',
+        name: 'Kojiro Sasaki',
         imgSrc: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
         maxFrames: 4,
-        scale : 2,
-        frameHold: 10,
+        scale: 2.5,
+        frameHold: 25,
         animate: true,
         spriteOffset: {
             x: 185,
-            y: 172,
+            y: 185,
         },
         sprites: {
             idle: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
-              maxFrames: 4
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
+                maxFrames: 4
             },
             run: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Run.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Run.png',
+                maxFrames: 8
             },
             jump: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Jump.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Jump.png',
+                maxFrames: 2
             },
             fall: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Fall.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Fall.png',
+                maxFrames: 2
             },
             attack1: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Attack1.png',
-              maxFrames: 4
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Attack1.png',
+                maxFrames: 4
             },
             takeHit: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Take hit.png',
-              maxFrames: 3
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Take hit.png',
+                maxFrames: 3
             },
             death: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Death.png',
-              maxFrames: 7
+                imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Death.png',
+                maxFrames: 7
             },
         },
-    
+
     },
 
     'evilWizard': {
-        name : 'Evil Wizard',
+        name: 'Evil Wizard',
         imgSrc: '../assets/charactersSprites/Evil Wizard/Idle.png',
         maxFrames: 8,
-        scale : 2,
+        scale: 2.4,
         frameHold: 10,
         animate: true,
         spriteOffset: {
             x: 185,
-            y: 172,
+            y: 265,
         },
         sprites: {
             idle: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Idle.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Idle.png',
+                maxFrames: 8
             },
             run: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Run.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Run.png',
+                maxFrames: 8
             },
             jump: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Jump.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Jump.png',
+                maxFrames: 2
             },
             fall: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Fall.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Fall.png',
+                maxFrames: 2
             },
             attack1: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Attack1.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Attack1.png',
+                maxFrames: 8
             },
             takeHit: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Take Hit.png',
-              maxFrames: 3
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Take Hit.png',
+                maxFrames: 3
             },
             death: {
-              imageSrc: '../assets/charactersSprites/Evil Wizard/Death.png',
-              maxFrames: 7
+                imageSrc: '../assets/charactersSprites/Evil Wizard/Death.png',
+                maxFrames: 7
             }
         },
     },
 
     'fantasyWarrior': {
-        name : 'Fantasy Warrior',
+        name: 'Fantasy Warrior',
         imgSrc: '../assets/charactersSprites/Fantasy Warrior/Idle.png',
         maxFrames: 10,
-        scale : 2,
+        scale: 3,
         frameHold: 10,
         animate: true,
         spriteOffset: {
             x: 185,
-            y: 172,
+            y: 168,
         },
         sprites: {
             idle: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Idle.png',
-              maxFrames: 10
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Idle.png',
+                maxFrames: 10
             },
             run: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Run.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Run.png',
+                maxFrames: 8
             },
             jump: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Jump.png',
-              maxFrames: 3
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Jump.png',
+                maxFrames: 3
             },
             fall: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Fall.png',
-              maxFrames: 3
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Fall.png',
+                maxFrames: 3
             },
             attack1: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Attack1.png',
-              maxFrames: 7
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Attack1.png',
+                maxFrames: 7
             },
             takeHit: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Take Hit.png',
-              maxFrames: 3
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Take Hit.png',
+                maxFrames: 3
             },
             death: {
-              imageSrc: '../assets/charactersSprites/Fantasy Warrior/Death.png',
-              maxFrames: 7
+                imageSrc: '../assets/charactersSprites/Fantasy Warrior/Death.png',
+                maxFrames: 7
             }
         },
     },
 
     'medievalKing': {
-        name : 'Medieval King',
+        name: 'Medieval King',
         imgSrc: '../assets/charactersSprites/Medieval King/Idle.png',
         maxFrames: 8,
-        scale : 2,
-        frameHold: 10,
+        scale: 3,
+        frameHold: 20,
         animate: true,
         spriteOffset: {
             x: 185,
-            y: 172,
+            y: 180,
         },
         sprites: {
             idle: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Idle.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Medieval King/Idle.png',
+                maxFrames: 8
             },
             run: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Run.png',
-              maxFrames: 8
+                imageSrc: '../assets/charactersSprites/Medieval King/Run.png',
+                maxFrames: 8
             },
             jump: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Jump.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Medieval King/Jump.png',
+                maxFrames: 2
             },
             fall: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Fall.png',
-              maxFrames: 2
+                imageSrc: '../assets/charactersSprites/Medieval King/Fall.png',
+                maxFrames: 2
             },
             attack1: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Attack1.png',
-              maxFrames: 4
+                imageSrc: '../assets/charactersSprites/Medieval King/Attack1.png',
+                maxFrames: 4
             },
             takeHit: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Take Hit.png',
-              maxFrames: 4
+                imageSrc: '../assets/charactersSprites/Medieval King/Take Hit.png',
+                maxFrames: 4
             },
             death: {
-              imageSrc: '../assets/charactersSprites/Medieval King/Death.png',
-              maxFrames: 6
+                imageSrc: '../assets/charactersSprites/Medieval King/Death.png',
+                maxFrames: 6
             }
         },
 
@@ -253,11 +253,38 @@ const characters = {
 }
 
 
+
+
+
+
+
 // =================================================== //
 // =================================================== //
 // =================================================== //
 
 
+let num1 = 0;
+let num2 = 1;
+let num3 = localStorage.getItem('player1');
+let num4 = localStorage.getItem('player2');
+
+let char1 = Object.keys(characters)[num3];
+let char2 = Object.keys(characters)[num4];
+
+let characterSprites;
+
+// Preload previewSprites and start animation after previewSprites are preloaded
+const preloadSprites = async () => {
+    const promises = Object.values(playerSpritesPreview).map(async (sprite) => {
+        const img = new Image();
+        img.src = sprite.src;
+        await new Promise((resolve) => (img.onload = resolve));
+        return img;
+    });
+
+    characterSprites = await Promise.all(promises);
+    return characterSprites;
+};
 
 
 // =================== Game Elements ================= //
@@ -280,107 +307,44 @@ const shopSprite = new Sprite({
 
 const player1 = new Player(
     {
+        ...characters[char1], // Spread the properties of 'miyamoto'
         position: { x: 100, y: 0 },
-        spriteOffset: {
-            x: 185,
-            y: 172,
-            dir: 1,
-        },
-        imgSrc: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
-        animate: true,
-        scale: 2.5,
-        maxFrames: 8,
-        frameHold: 10,
         velocity: { x: 0, y: 0 },
         attackOffset: 1,
         playerOffset: 1,
-        sprites: {
-            idle: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
-              maxFrames: 8
-            },
-            run: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Run.png',
-              maxFrames: 8
-            },
-            jump: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Jump.png',
-              maxFrames: 2
-            },
-            fall: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Fall.png',
-              maxFrames: 2
-            },
-            attack1: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Attack1.png',
-              maxFrames: 6
-            },
-            takeHit: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Take Hit.png',
-              maxFrames: 4
-            },
-            death: {
-              imageSrc: '../assets/charactersSprites/Miyamoto Mushashi/Death.png',
-              maxFrames: 6
-            }
+        spriteOffset: {
+            ...characters[char1].spriteOffset, // Spread the spriteOffset properties
+            dir: 1, // Update the dir value
         },
     }
 );
 
 const player2 = new Player(
     {
+        ...characters[char2], // Spread the properties of 'miyamoto'
         position: { x: 200, y: 0 },
-        spriteOffset: {
-            x: 185,
-            y: 185,
-            dir: 1,
-        },
-        imgSrc: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
-        animate: true,
-        scale: 2.5,
-        maxFrames: 4,
-        frameHold: 15,
         velocity: { x: 0, y: 0 },
         attackOffset: -1,
         playerOffset: -1,
-        color: 'cyan',
-        sprites: {
-            idle: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
-              maxFrames: 4
-            },
-            run: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Run.png',
-              maxFrames: 8
-            },
-            jump: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Jump.png',
-              maxFrames: 2
-            },
-            fall: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Fall.png',
-              maxFrames: 2
-            },
-            attack1: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Attack1.png',
-              maxFrames: 4
-            },
-            takeHit: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Take hit.png',
-              maxFrames: 3
-            },
-            death: {
-              imageSrc: '../assets/charactersSprites/Kojiro Sasaki/Death.png',
-              maxFrames: 7
-            },
-        },
-    }
+        spriteOffset: {
+            ...characters[char2].spriteOffset, // Spread the spriteOffset properties
+            dir: -1, // Update the dir value
+        }
+    },
 );
+
+
+// // Main function
+// preloadSprites().then((loadedImages) => {
+
+
+
+// });
 
 
 console.log(player1);
 console.log(player2);
-console.log(count1, count2);
+
 
 
 // =================================================== //
@@ -537,7 +501,7 @@ const handleKeyUp = (event) => {
         case 'k':
         case 'K':
         case 'ArrowDown':
-        case '5': 
+        case '5':
             player2.isAttacking = false;
             break;
     }
@@ -622,8 +586,8 @@ const startAnimation = () => {
 
         backGroundSprite.update();
         shopSprite.update();
-        
-        if(showPlayers){
+
+        if (showPlayers) {
             player1.update();
             player2.update();
         }
@@ -643,7 +607,7 @@ window.onload = function () {
     startAnimation();
 }
 
-// gameStart();
+gameStart();
 
 startGame.addEventListener('click', gameStart)
 playAgain.addEventListener('click', () => {

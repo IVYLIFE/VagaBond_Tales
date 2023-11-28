@@ -13,28 +13,61 @@
 
     <div id="game">
 
-        <div class="gameStatus hidden">
+        <div id="top">
+            <div class="gameStatus hidden">
 
-            <div id="player1" class="healthContainer">
-                <div class="healthBar"></div>
+                <div id="player1HealthBar" class="healthContainer">
+                    <div class="healthBar"></div>
+                </div>
+
+                <div id="clock"></div>
+
+                <div id="player2HealthBar" class="healthContainer">
+                    <div class="healthBar"></div>
+                </div>
+
             </div>
 
-
-            <div id="clock"></div>
-
-            <div id="player2" class="healthContainer">
-                <div class="healthBar"></div>
+            <div class="playersName hidden">
+                <p class="playerName p1">Player 1</p>
+                <p class="playerName p2">Player 2</p>
             </div>
-
-        </div>
-
-        <div class="playersName hidden">
-            <p class="player p1">Player 1</p>
-            <p class="player p2">Player 2</p>
         </div>
 
         <div class="gameOption">
-            <div id="startGameMessage">
+
+            <div id="playGame" class="btn ">Play</div>
+
+            <div id="startGameMessage" class="hidden">
+                <div id="choosePlayers">
+
+                    <div class="preview">
+
+                        <canvas id="player1Preview"></canvas>
+                        <p id="player1Name">Player 1</p>
+
+                        <div class="player1left left control">
+                            <img src="./assets/prev_filled.svg" alt="prev">
+                        </div>
+                        <div class="player1right right control">
+                            <img src="./assets/next_filled.svg" alt="next">
+                        </div>
+
+                    </div>
+
+                    <div class="preview">
+                        <canvas id="player2Preview"></canvas>
+                        <p id="player2Name">Player 2</p>
+                        <div class="player2left left control">
+                            <img src="./assets/prev_filled.svg" alt="prev">
+                        </div>
+                        <div class="player2right right control">
+                            <img src="./assets/next_filled.svg" alt="next">
+                        </div>
+                    </div>
+
+                </div>
+
                 <div id="startGame" class="btn"> Start Game </div>
             </div>
 
@@ -44,12 +77,16 @@
             </div>
         </div>
 
+
+
         <canvas id="canvas"></canvas>
     </div>
 
+    <script src="./js/playersPreview.js"></script>
+    <!-- <script src="./js/2.js"></script> -->
+    <!-- <script src="./js/1.js"></script> -->
     <script src="./js/utils.js"></script>
     <script src="./js/index.js"></script>
-    <!-- <script src="./main.js"></script> -->
 
 
 </body>
