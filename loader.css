@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* font-family: 'Press Start 2P', cursive; */
+  position: relative;
+}
+
+
+/* =========== Game Canvas =========== */
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  /* background-image: url('./assets/backgroundSprites/background.png'); */
+  /* background-size: cover; */
+}
+
+
+/* =========== Game Info =========== */
+#top {
+  position: absolute;
+  width: 100%;
+  padding: 20px;
+}
+
+.gameStatus {
+  display: flex;
+  align-items: center;
+}
+
+#clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  background-color: black;
+  flex-shrink: 0;
+  color: white;
+  border: 5px solid white;
+  font-size: clamp(0.5rem, 1.4vw, 1.5rem);
+  height: clamp(30px, 7vw, 65px);
+  width: clamp(50px, 10vw, 100px);
+}
+
+.playersName {
+  display: flex;
+  justify-content: space-between;
+  margin-top: .2rem;
+  border: 1px solid red;
+}
+
+#p1, #p2 {
+  width: fit-content;
+  padding: 0.4rem;
+  font-size: clamp(0.5rem, 1vw, 1.5rem);
+}
+
+.healthContainer {
+  background: #818cf8;
+  width: 100%;
+  display: flex;
+  position: relative;
+  border-top: 5px solid white;
+  border-bottom: 5px solid white;
+  height: clamp(20px, 4vw, 50px);
+}
+
+#player1HealthBar {
+  border-left: 5px solid white;
+  justify-content: flex-end;
+}
+
+#player2HealthBar {
+  border-right: 5px solid white;
+}
+
+.healthBar {
+  background: yellow;
+}
+
+/* =========== Game Result =========== */
+.gameOption {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 4px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  padding: .5rem;
+  margin: 1rem auto;
+}
+
+.gameOption>div {
+  width: 100%;
+}
+
+#choosePlayers {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 50%;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.preview p {
+  /* margin: 1rem auto; */
+  font-size: small;
+  border: 1px dotted black;
+  text-align: center;
+
+}
+
+.preview canvas {
+  border: 1px dotted black;
+  width: 100%;
+}
+#player1PreviewCanvas, #player2PreviewCanvas {
+  border: 1px dotted black;
+  /* width: 100%; */
+}
+
+
+.player1Controls, .player2Controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid cyan;
+  width: fit-content;
+}
+
+
+.control {
+  color: #000;
+  opacity: 0.2;
+  transition: background-color 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.control img {
+  width: 100%;
+  height: 100%;
+}
+
+.preview .left {
+  left: 4%;
+}
+
+.preview .right {
+  right: 4%;
+}
+
+.left:hover,
+.right:hover {
+  background-color: #d1caca;
+  opacity: 0.5;
+}
+
+
+#playGame, #endGameMessage, #startGameMessage {
+    width: fit-content;
+    cursor: pointer;
+    border-bottom: 1px solid black;
+}
+
+#endGameMessage #result {
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.gameOption .btn {
+  width: 100%;
+  min-width: 200px;
+  width: fit-content;
+  background-color: rgb(221, 235, 247);
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  margin: 1rem auto 0;
+}
+
+
+.gameOption .btn:active {
+  transform: scale(0.95);
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+
+
+@media screen and (max-width: 900px) {
+  #game {
+    width: 100%;
+  }
+
+  #top {
+    padding: 10px;
+  }
+
+  #clock {
+    border: 3px solid white;
+  }
+
+  #player1HealthBar {
+    border: 3px solid white;
+    border-right: none;
+  }
+
+  #player2HealthBar {
+    border: 3px solid white;
+    border-left: none;
+  }
+
+  .playerName {
+    top: 70px;
+    padding: 0;
+  }
+
+}
+
+@media screen and (max-width: 750px) {
+
+  .gameOption {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(182, 175, 175);
+    width: fit-content;
+    gap: 0.2rem;
+    border-radius: 4px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  }
+
+  .playerName {
+    top: 60px;
+    padding: 0;
+  }
+
+}
+
+@media screen and (max-width: 650px) {
+
+  .playerName {
+    top: 55px;
+  }
+
+}
+
+
+#resolution,
+#canvasInfo {
+  position: absolute;
+  border: 1px solid green;
+  padding: 0.5rem;
+  font-size: .6rem;
+  line-height: 2;
+  color: black;
+  background-color: white;
+  width: fit-content;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+}
+
+#resolution {
+  bottom: -120px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+#canvasInfo {
+  left: 50%;
+  bottom: -240px;
+  transform: translate(-50%, 0%);
+}
+
+.horizontalBar,
+.verticalBar {
+  position: absolute;
+  border: 4px solid rgba(0, 128, 0, 0.329);
+}
+
+.horizontalBar {
+  top: 50%;
+  width: 100%;
+  height: 4px;
+  transform: translate(0%, -50%);
+}
+
+.verticalBar {
+  height: 100%;
+  width: 4px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+

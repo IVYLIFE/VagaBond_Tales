@@ -2,265 +2,165 @@ console.log('utils.js loaded')
 
 // ==================== Variables ===================== //
 
-let gameDuration = 900
-let countDownId
-let isGameStarted = false
-let showPlayers = false
-let animationId
+let gameDuration = 900;
+let countDownId;
+let isGameStarted = false;
+let showPlayers = false;
+let animationId;
 
-const gameStatus = document.querySelector('.gameStatus')
-const playersName = document.querySelector('.playersName')
-const clock = document.querySelector('#clock')
-
-const gameOption = document.querySelector('.gameOption')
-const playGame = document.querySelector('#playGame');
-const startGameMessage = document.querySelector('#startGameMessage')
-const result = document.querySelector('#result')
-const endGameMessage = document.querySelector('#endGameMessage')
+let player1PreviewData = {};
+let player2PreviewData = {};
+let length = totalCharacters
 
 
-const player1Health = document.getElementById('player1HealthBar')
-const player2Health = document.getElementById('player2HealthBar')
+const selectPlayer = (count) => {
+    count = (count + length) % length;
+    let character = Object.keys(characters)[count];
+    let characterData = characters[character];
+    let imgSrc = characterData.imgSrc;
+    let img = new Image();
+    img.src = imgSrc;
 
-// ==================================================== //
-// ==================================================== //
-// ==================================================== //
+    let data = {
+        name: characterData.name,
+        image: img,
+        scale: characterData.scale,
+        maxFrame: characterData.maxFrames,
+        spriteOffset: { ...characterData.spriteOffset },
+        currentFrame: 0,
+        frameElapsed: 0,
+    };
 
-class Sprite {
-    constructor({
-        position,
-        spriteOffset = { x: 0, y: 0, dir : 1 },
-        imgSrc,
-        animate = false,
-        scale = 1,
-        maxFrames = 1,
-        frameHold
-    }) {
-        this.position = position
-        this.spriteOffset = spriteOffset
-        this.image = new Image()
-        this.image.src = imgSrc
-        this.animate = animate
-        this.scale = scale
-        this.maxFrames = maxFrames
-        this.currentFrame = 0
-        this.frameElapsed = 0
-        this.frameHold = frameHold
-        this.frameWidth = this.image.width / this.maxFrames
-        this.frameHeight = this.image.height
-    }
+    data.frameWidth = img.width / data.maxFrame;
+    data.frameHeight = img.height;
 
-    draw() {
-        if (this.spriteOffset.dir == 1) {
-            ctx.drawImage(
-                this.image,
-                this.currentFrame * this.frameWidth, 0,          // Starting position for clipping (x, y)
-                this.frameWidth, this.frameHeight,               // Width and height of the clipped image
-                this.position.x - this.spriteOffset.x,           // X-Position on the canvas to draw the image
-                this.position.y - this.spriteOffset.y,           // Y-Position on the canvas to draw the image
-                this.frameWidth * this.scale,                    // Width of the drawn image on the canvas
-                this.image.height * this.scale                   // Height of the drawn image on the canvas
-            )
-        } else {
-            ctx.save();
-            ctx.scale(-1, 1);
+    return data;
+};
 
-            ctx.drawImage(
-                this.image,
-                (1 + this.currentFrame) * this.frameWidth, 0,                       // Starting position for clipping (x, y)
-                (-1 * this.frameWidth), this.frameHeight,                           // Width and height of the clipped image
-                (-1 * this.frameWidth) - this.position.x - this.spriteOffset.x,     // X-Position on the canvas to draw the image
-                this.position.y - this.spriteOffset.y,                              // Y-Position on the canvas to draw the image 
-                this.frameWidth * this.scale,                                       // Width of the drawn image on the canvas
-                this.image.height * this.scale                                      // Height of the drawn image on the canvas
-            );
-            ctx.restore(); // Restore the last saved state
-        }
-    }
 
-    update() {
-        this.draw()
-        this.changeFrame()
-    }
+const showPlayer = (player1, player2) => {
+    player1NamePreview.innerHTML = player1.name;
+    player2NamePreview.innerHTML = player2.name;
 
-    changeFrame() {
-        this.frameElapsed++
+    player1Name.innerHTML = player1.name;
+    player2Name.innerHTML = player2.name;
+}
 
-        if (this.frameElapsed % this.frameHold == 0) {
-            if (this.currentFrame < this.maxFrames - 1) {
-                this.currentFrame++
+const playerSelection = (count1, count2) => {
+
+    player1PreviewData = selectPlayer(count1);
+    player2PreviewData = selectPlayer(count2);
+    showPlayer(player1PreviewData, player2PreviewData);
+    console.log(player1PreviewData)
+    console.log(player2PreviewData)
+
+    player1Left.addEventListener('click', () => {
+        count1 = (count1 - 1 + length) % length;
+        player1PreviewData = selectPlayer(count1);
+        showPlayer(player1PreviewData, player2PreviewData);
+    });
+
+    player1Right.addEventListener('click', () => {
+        count1 = (count1 + 1) % length;
+        player1PreviewData = selectPlayer(count1);
+        showPlayer(player1PreviewData, player2PreviewData);
+    });
+
+    player2Left.addEventListener('click', () => {
+        count2 = (count2 - 1 + length) % length;
+        player2PreviewData = selectPlayer(count2);
+        showPlayer(player1PreviewData, player2PreviewData);
+    });
+
+    player2Right.addEventListener('click', () => {
+        count2 = (count2 + 1) % length;
+        player2PreviewData = selectPlayer(count2);
+        showPlayer(player1PreviewData, player2PreviewData);
+    });
+
+    const draw = (ctx, sprite) => {
+        ctx.drawImage(
+            sprite.image,
+            sprite.currentFrame * sprite.frameWidth, 0,
+            sprite.frameWidth, sprite.frameHeight,
+            // 0,0,
+            (previewWidth / 2) - (sprite.frameWidth * (sprite.scale / 2)), (previewHeight / 2) - (sprite.frameHeight * (sprite.scale / 2)),
+            sprite.frameWidth * sprite.scale,
+            sprite.frameHeight * sprite.scale,
+        );
+    };
+
+    const changeFrame = (img) => {
+        img.frameElapsed++;
+
+        if (img.frameElapsed % frameHold === 0) {
+            if (img.currentFrame < img.maxFrame - 1) {
+                img.currentFrame++;
             } else {
-                this.currentFrame = 0
+                img.currentFrame = 0;
             }
         }
+    };
+
+    const startAnimation = () => {
+        ctx1.clearRect(0, 0, player1PreviewCanvas.width, player1PreviewCanvas.height);
+        ctx2.clearRect(0, 0, player2PreviewCanvas.width, player2PreviewCanvas.height);
+
+        draw(ctx1, player1PreviewData);
+        draw(ctx2, player2PreviewData);
+
+        changeFrame(player1PreviewData);
+        changeFrame(player2PreviewData);
+    };
+
+    function animate() {
+        startAnimation();
+        requestAnimationFrame(animate);
     }
+
+    animate();
+
 }
 
-class Player extends Sprite {
-    constructor({
-        position,
-        spriteOffset,
-        imgSrc,
-        animate = false,
-        scale = 1,
-        maxFrames = 1,
-        frameHold,
-        sprites,
-        velocity,
-        attackOffset,
-        playerOffset,
-        color = 'blue'
-    }) {
-        super({
-            position, // store the position of the player
-            spriteOffset,
-            imgSrc,
-            animate,
-            scale,
-            maxFrames,
-            frameHold
-        })
+const createPlayers = (idx1, idx2) => {
 
-        this.currentFrame = 0
-        this.frameElapsed = 0
-        this.frameWidth = this.image.width / this.maxFrames
-        this.sprites = sprites
-        for (const sprite in this.sprites) {
-            sprites[sprite].image = new Image()
-            sprites[sprite].image.src = sprites[sprite].imageSrc
-        }
+    char1 = Object.keys(characters)[idx1];
+    char2 = Object.keys(characters)[idx2];
 
-        this.width = 35 // store the width of the player
-        this.height = 160 // store the height of the player
+    player1 = new Player({
+        ...characters[char1], // Spread the properties of 'miyamoto'
+        position: { x: 0, y: 0 },
+        velocity: { x: 0, y: 0 },
+        spriteOffset: {
+            x: characters[char1].spriteOffset.x * characters[char1].scale,
+            y: characters[char1].spriteOffset.y * characters[char1].scale,
+            dir: 1
+        },
+        playerOffset: 1,
+    });
 
-        this.velocity = velocity // store the velocity of the player
-        this.attackOffset = attackOffset // store the attackOffset of the player [ 1 => Right, -1 => Left]
-        this.playerOffset = playerOffset
-        this.color = color // store the color of the player
+    player2 = new Player({
+        ...characters[char2], // Spread the properties of 'miyamoto'
+        position: { x: 1200, y: 0 },
+        velocity: { x: 0, y: 0 },
+        spriteOffset: {
+            x: characters[char1].spriteOffset.x * characters[char1].scale,
+            y: characters[char1].spriteOffset.y * characters[char1].scale,
+            dir: -1
+        },
+        playerOffset: -1,
+    },);
 
-        this.doubleJump = false // checks if the player can double jump or not
-        this.lastMove // store the last move in horizontal direction
-        this.move_H = [] // store the last two horizontal moves
-        this.jumpCount = 0 // store the number of jumps
-
-        this.isAttacking // checks if the player is attacking or not
-        this.health = 100 // store the health of the player
-        this.dead = false
-        this.attackBox = {
-            width: 100,
-            height: 25,
-            position: {
-                x: this.position.x,
-                y: this.position.y
-            }
-        }
-    }
-
-    update() {
-        this.draw()
-        if(this.animate){
-            this.changeFrame()
-        }
-
-        // this.attackBox.position.x = this.attackOffset === 1 ? this.position.x : this.position.x - this.attackBox.width + this.width
-        // this.attackBox.position.y = this.position.y
-
-        this.position.x += this.velocity.x
-        if (Math.floor(this.position.y + this.height + this.velocity.y) > landingHeight) {
-            this.velocity.y = 0
-        } else {
-            this.velocity.y += gravity
-            this.position.y += this.velocity.y
-        }
-    }
-
-
-    attack() {
-        this.changeSprite('attack1')
-        this.isAttacking = true
-        setTimeout(() => {
-            this.isAttacking = false
-        }, 100)
-    }
-
-    changeSprite(sprite) {
-        if (this.image === this.sprites.death.image) {
-            if (this.currentFrame === this.sprites.death.maxFrames - 1) { this.dead = true }
-            return
-        }
-
-        if (this.image === this.sprites.attack1.image && this.currentFrame < this.sprites.attack1.maxFrames - 1) return
-
-        if (this.image === this.sprites.takeHit.image && this.currentFrame < this.sprites.takeHit.maxFrames - 1) return
-
-        switch (sprite) {
-            case 'idle':
-                if (this.image !== this.sprites.idle.image) {
-                    this.image = this.sprites.idle.image
-                    this.maxFrames = this.sprites.idle.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-
-            case 'run':
-                if (this.image !== this.sprites.run.image) {
-                    this.image = this.sprites.run.image
-                    this.maxFrames = this.sprites.run.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-
-            case 'jump':
-                if (this.image !== this.sprites.jump.image) {
-                    this.image = this.sprites.jump.image
-                    this.maxFrames = this.sprites.jump.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-
-            case 'fall':
-                if (this.image !== this.sprites.fall.image) {
-                    this.image = this.sprites.fall.image
-                    this.maxFrames = this.sprites.fall.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-
-            case 'attack1':
-                if (this.image !== this.sprites.attack1.image) {
-                    this.image = this.sprites.attack1.image
-                    this.maxFrames = this.sprites.attack1.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-
-            case 'takeHit':
-                if (this.image !== this.sprites.takeHit.image) {
-                    this.image = this.sprites.takeHit.image
-                    this.maxFrames = this.sprites.takeHit.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-
-            case 'death':
-                if (this.image !== this.sprites.death.image) {
-                    this.image = this.sprites.death.image
-                    this.maxFrames = this.sprites.death.maxFrames
-                    this.currentFrame = 0
-                }
-                break
-        }
-    }
-}
-
-
-
+};
 
 const gameStart = () => {
     startGameMessage.classList.add('hidden')
     gameOption.classList.add('hidden')
-    gameStatus.classList.remove('hidden')
-    playersName.classList.remove('hidden')
+    gameInfo.classList.remove('hidden')
+
+    createPlayers(count1, count2);
+    console.log(count1, count2)
+    console.log(player1, player2);
 
     player1Health.style.width = `${player1.health}%`
     player2Health.style.width = `${player2.health}%`
@@ -269,7 +169,7 @@ const gameStart = () => {
     showPlayers = true
     countDown()
     startAnimation()
-}
+};
 
 const countDown = () => {
     if (isGameStarted) {
@@ -282,7 +182,7 @@ const countDown = () => {
             countDownId = setTimeout(countDown, 1000)
         }
     }
-}
+};
 
 const gameOver = ({ player, enemy, countDownId }) => {
     isGameStarted = false
@@ -304,16 +204,21 @@ const gameOver = ({ player, enemy, countDownId }) => {
 
     gameOption.classList.remove('hidden')
     endGameMessage.classList.remove('hidden')
-}
+};
 
 const collision = ({ player, enemy }) => {
+    let isColliding = player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
+        player.attackBox.position.x <= enemy.position.x + enemy.width &&
+        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
+        player.attackBox.position.y <= enemy.position.y + enemy.height
+    console.log('Collision Happening : ', isColliding)
     return (
         player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
         player.attackBox.position.x <= enemy.position.x + enemy.width &&
         player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
         player.attackBox.position.y <= enemy.position.y + enemy.height
     )
-}
+};
 
 const changeDirection = ({ player, enemy }) => {
     if (player.position.x > enemy.position.x + enemy.width) {
@@ -323,17 +228,19 @@ const changeDirection = ({ player, enemy }) => {
         player.spriteOffset.dir = 1
         player.playerOffset = 1
     }
-}
+};
 
 const playerStanding = (player) => {
-    if ( Math.floor(player.velocity.y + player.position.y + player.height) === landingHeight ) {
+    if (Math.floor(player.velocity.y + player.position.y + player.image.height * player.scale) === landingHeight) {
         player.jumpCount = 0
     }
-}
+};
 
-// Event Listeners
-playGame.addEventListener('click', () => {
-    playGame.classList.add('hidden');
-    startGameMessage.classList.remove('hidden');
-});
 
+
+startGame.addEventListener('click', gameStart)
+
+playAgain.addEventListener('click', () => {
+    window.location.reload();
+    showPlayers = false
+})

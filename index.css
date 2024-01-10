@@ -1,8 +1,5 @@
-@font-face {
-  font-family: 'Inter';
-  src: url('./assets/fonts/Inter-Regular.ttf');
-  /* src: url('./assets/fonts/Roboto-Regular.ttf'); */
-}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 
 * {
   margin: 0;
@@ -12,20 +9,24 @@
 
 body {
   background-color: red;
-  font-family: 'Inter';
-  /* min-width: 1200px; */
+  font-family: 'Press Start 2P', cursive;
+  display: flex;
 }
 
-#game {
+#game{
   position: relative;
-  display: inline-block;
+  width: 80%;
+  margin: 0 auto;
 }
 
 /* =========== Game Canvas =========== */
 #canvas {
-  /* min-width: 1200px; */
-  background-color: bisque;
+  width: 100%;
+  border: 1px solid black;
+  background-image: url('./assets/background.png');
 }
+
+
 
 /* =========== Game Info =========== */
 .gameStatus {
@@ -42,12 +43,12 @@ body {
   align-items: center;
   font-size: 1.5rem;
   background-color: black;
-  width: 100px;
-  height: 65px;
   flex-shrink: 0;
   color: white;
   border: 5px solid white;
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  font-size: clamp(0.5rem, 1.4vw, 2rem);
+  height: clamp(30px, 7vw, 65px);
+  width: clamp(50px, 10vw, 100px);
 }
 
 .playerName {
@@ -55,7 +56,7 @@ body {
   position: absolute;
   padding: 0.4rem;
   top: 80px;
-  font-size: 1.2rem;
+  font-size: clamp(0.5rem, 1vw, 1.5rem);
 }
 
 .p1 {
@@ -70,10 +71,10 @@ body {
   background: blue;
   width: 100%;
   display: flex;
-  height: 50px;
   position: relative;
   border-top: 5px solid white;
   border-bottom: 5px solid white;
+  height: clamp(20px, 4vw, 50px);
 }
 
 #player1HealthBar {
@@ -115,7 +116,6 @@ body {
 #startGameMessage,
 #endGameMessage,
 #playGame {
-  border: 1px solid green;
   margin: 0.5rem 0;
 }
 
@@ -124,6 +124,7 @@ body {
   justify-content: space-around;
   align-items: center;
   gap: 2rem;
+  width: 100%;
 }
 
 .preview {
@@ -132,14 +133,22 @@ body {
   justify-content: center;
   align-items: center;
   position: relative;
+  width: 50%;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .preview p {
-  margin: 1rem auto;
+  /* margin: 1rem auto; */
+  font-size: small;
+  border: 1px dotted black;
+  text-align: center;
+  
 }
 
 .preview canvas {
-  border: 1px solid red;
+  border: 1px dotted black;
+  width: 100%;
 }
 
 .control {
@@ -202,3 +211,67 @@ body {
 .hidden {
   display: none;
 }
+
+
+
+
+
+@media screen and (max-width: 900px) {
+  #game{
+    width: 100%;
+  }
+
+  .gameStatus {
+    padding: 10px;
+  }
+
+  #clock {
+    border: 3px solid white;
+  }
+
+  #player1HealthBar {
+    border: 3px solid white;
+    border-right: none ;
+  }
+  
+  #player2HealthBar {
+    border: 3px solid white;
+    border-left: none ;
+  }
+
+  .playerName {
+    top: 70px;
+    padding: 0;
+  } 
+  
+}
+
+@media screen and (max-width: 750px) {
+  
+  .gameOption {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(182, 175, 175);
+    width: fit-content;
+    gap: 0.2rem;
+    border-radius: 4px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
+      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  }
+
+  .playerName {
+    top: 60px;
+    padding: 0;
+  } 
+
+}
+
+@media screen and (max-width: 650px) {
+  
+  .playerName {
+    top: 55px;
+  }
+  
+}
+

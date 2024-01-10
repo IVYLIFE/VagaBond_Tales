@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./loader.css">
+
+</head>
+
+<body>
+
+    <h1>Hello World</h1>
+    
+    <div id="top" class="hidden">
+
+        <div class="gameStatus">
+
+            <div id="player1HealthBar" class="healthContainer">
+                <div id="player1health" class="healthBar"></div>
+            </div>
+
+            <div id="clock"></div>
+
+            <div id="player2HealthBar" class="healthContainer">
+                <div id="player2health" class="healthBar"></div>
+            </div>
+
+        </div>
+
+        <div class="playersName">
+            <p id="p1">Player 1</p>
+            <p id="p2">Player 2</p>
+        </div>
+
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <canvas id="player1PreviewCanvas"></canvas>
+    <canvas id="player2PreviewCanvas"></canvas>
+
+
+    <div class="gameOption">
+        <div id="playGame">Play</div>
+
+        <div id="startGameMessage" class="hidden">
+            <div id="startGame">Start Game</div>
+            <div id="endGameMessage" class="hidden">
+                <p id="result">Result</p>
+                <div id="playAgain" class="btn">Play Again</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <p id="player1Name">Player 1</p>
+    <div class="player1Controls">
+        <div class="player1left left control">
+            <img src="./assets/prev_filled.svg" alt="prev">
+        </div>
+        <div class="player1right right control">
+            <img src="./assets/next_filled.svg" alt="next">
+        </div>
+    </div>
+
+    <p id="player2Name">Player 2</p>
+    <div class="player2Controls">
+        <div class="player2left left control">
+            <img src="./assets/prev_filled.svg" alt="prev">
+        </div>
+        <div class="player2right right control">
+            <img src="./assets/next_filled.svg" alt="next">
+        </div>
+    </div>
+
+
+
+
+    <script src="./all js/domElement.js"></script>
+    <script src="./all js/gameElements.js"></script>
+    <script src="./all js/utils.js"></script>
+    <script src="./all js/game.js"></script>
+
+</body>
+
+</html>
