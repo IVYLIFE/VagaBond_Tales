@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-
 * {
   margin: 0;
   padding: 0;
@@ -8,18 +7,30 @@
 }
 
 body {
-  /* font-family: 'Press Start 2P', cursive; */
+  font-family: 'Press Start 2P', cursive;
   position: relative;
+  width: 100%;
+  height: 100vh;
 }
 
+#game {
+  background-color: #1100ee22;
+  /* background-color: #1100ff66; */
+  width: 100%;
+  height: 100%;
+}
 
 /* =========== Game Canvas =========== */
 #gameCanvas {
-  width: 100%;
-  height: 100%;
   border: 1px solid black;
-  /* background-image: url('./assets/backgroundSprites/background.png'); */
-  /* background-size: cover; */
+  margin: 0 auto;
+  display: block;
+}
+
+@media screen and (max-width: 1400px) {
+  #gameCanvas {
+    width: 100%;
+  }
 }
 
 
@@ -52,11 +63,11 @@ body {
 .playersName {
   display: flex;
   justify-content: space-between;
-  margin-top: .2rem;
-  border: 1px solid red;
+  margin-top: 0.2rem;
 }
 
-#p1, #p2 {
+#p1,
+#p2 {
   width: fit-content;
   padding: 0.4rem;
   font-size: clamp(0.5rem, 1vw, 1.5rem);
@@ -91,79 +102,80 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  position: absolute;
+  background-color: #c19b9b;
   border-radius: 4px;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
-    rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-  padding: .5rem;
-  margin: 1rem auto;
+
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.gameOption>div {
+.gameOption > div {
   width: 100%;
 }
 
-#choosePlayers {
+#previewCanvasContainer {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  gap: 2rem;
-  width: 100%;
+  gap: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: 0.5rem;
 }
 
-.preview {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 50%;
-  gap: 1rem;
+#choosePlayers {
   margin-bottom: 1rem;
 }
 
-.preview p {
-  /* margin: 1rem auto; */
-  font-size: small;
-  border: 1px dotted black;
-  text-align: center;
-
-}
 
 .preview canvas {
   border: 1px dotted black;
   width: 100%;
 }
-#player1PreviewCanvas, #player2PreviewCanvas {
-  border: 1px dotted black;
-  /* width: 100%; */
+
+#playerSelectionContainer{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#playerSelectionContainer > div{
+  flex: 1;
 }
 
 
-.player1Controls, .player2Controls {
+.player1Controls,
+.player2Controls {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  background-color: aliceblue;
   gap: 1rem;
-  border: 1px solid cyan;
-  width: fit-content;
 }
-
 
 .control {
   color: #000;
   opacity: 0.2;
-  transition: background-color 0.5s ease-in-out;
-  transition: opacity 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out, opacity 0.5s ease-in-out;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: clamp(20px, 3vw, 30px);
+  height: clamp(20px, 3vh, 30px);
   cursor: pointer;
 }
 
 .control img {
   width: 100%;
   height: 100%;
+}
+
+.player1Controls p,
+.player2Controls p{
+  flex : 1;
+  text-align: center;
+  font-size: clamp(0.6rem, 1vw, 1rem);
+  border-bottom: 1px dotted black;
 }
 
 .preview .left {
@@ -180,11 +192,11 @@ body {
   opacity: 0.5;
 }
 
-
-#playGame, #endGameMessage, #startGameMessage {
-    width: fit-content;
-    cursor: pointer;
-    border-bottom: 1px solid black;
+#play,
+#endGameMessage,
+#selectionContainer {
+  width: fit-content;
+  cursor: pointer;
 }
 
 #endGameMessage #result {
@@ -195,18 +207,16 @@ body {
 
 .gameOption .btn {
   width: 100%;
-  min-width: 200px;
-  width: fit-content;
+  min-width: 150px;
   background-color: rgb(221, 235, 247);
   text-align: center;
-  padding: 0.5rem;
+  padding: 5px;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 1vw, 1.5rem);
   transition: 0.2s ease-in-out;
   cursor: pointer;
-  margin: 1rem auto 0;
+  margin: 0 auto;
 }
-
 
 .gameOption .btn:active {
   transform: scale(0.95);
@@ -217,7 +227,16 @@ body {
 }
 
 
-
+@media screen and (max-width: 1100px) {
+  .gameOption {
+    top: 25%;
+  }
+}
+@media screen and (max-width: 800px) {
+  .gameOption {
+    top: 20%;
+  }
+}
 
 
 @media screen and (max-width: 900px) {
@@ -247,86 +266,50 @@ body {
     top: 70px;
     padding: 0;
   }
-
 }
 
 @media screen and (max-width: 750px) {
-
   .gameOption {
-    top: 40%;
-    left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgb(182, 175, 175);
     width: fit-content;
     gap: 0.2rem;
     border-radius: 4px;
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
-      rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
   }
 
   .playerName {
     top: 60px;
     padding: 0;
   }
-
 }
 
 @media screen and (max-width: 650px) {
-
   .playerName {
     top: 55px;
   }
 
+  .gameOption {
+    top: 15%;
+  }
 }
 
 
-#resolution,
-#canvasInfo {
-  position: absolute;
-  border: 1px solid green;
-  padding: 0.5rem;
-  font-size: .6rem;
-  line-height: 2;
-  color: black;
-  background-color: white;
-  width: fit-content;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-}
-
-#resolution {
-  bottom: -120px;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
-
-#canvasInfo {
-  left: 50%;
-  bottom: -240px;
-  transform: translate(-50%, 0%);
-}
-
-.horizontalBar,
-.verticalBar {
-  position: absolute;
-  border: 4px solid rgba(0, 128, 0, 0.329);
-}
-
-.horizontalBar {
-  top: 50%;
-  width: 100%;
-  height: 4px;
-  transform: translate(0%, -50%);
-}
-
-.verticalBar {
-  height: 100%;
-  width: 4px;
-  left: 50%;
-  transform: translate(-50%, 0%);
-}
 
 
+
+/* @media screen and (max-height: 785px) {
+  #gameCanvas {
+    height: 100%;
+  }
+} */
+
+/* @media screen and (max-width: 600px) {
+  body {
+    transform: rotate(90deg);
+  }
+
+  #gameCanvas {
+    height: 100vw;
+    width: 100vh;
+  }
+} */
