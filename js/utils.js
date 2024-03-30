@@ -1,30 +1,122 @@
 console.log('utils.js loaded')
 
-// ==================== Variables ===================== //
+import { animationId, startAnimation } from './game.js';
 
-let gameDuration = 900;
-let countDownId;
+import {
+    ctx1,
+    ctx2,
+
+    player1Name,
+    player2Name,
+    player1NamePreview,
+    player2NamePreview,
+    player1Left,
+    player1Right,
+    player2Left,
+    player2Right,
+
+    selectionContainer,
+
+    player1Health,
+    player2Health,
+
+    gameInfo,
+    clock,
+    gameOption,
+    result,
+
+    CONSTANTS
+} from './constants.js';
+
+import {
+    Sprite,
+    Player,
+    gameSprites,
+    characters,
+    preloadSprites,
+} from './gameElements.js'
+
+
+// ==================== Variables ===================== //
+let count1 = 0;
+let count2 = 1;
+let length = characters.numbers;
+let startTime = Date.now();
+
 let isGameStarted = false;
 let showPlayers = false;
-let animationId;
+let countDownId;
+
+
+if (count1 > length - 1) { count1 = 0 }
+if (count2 > length - 1) { count2 = 0 }
 
 let player1PreviewData = {};
 let player2PreviewData = {};
-let length = totalCharacters
 
+let gameDuration = CONSTANTS.gameDuration;
+
+
+
+let BackGround;
+let Shop;
+let Player1;
+let Player2;
+const Players = [];
+
+preloadSprites(gameSprites, (sprites) => {
+    console.log(`\n\nAll sprites are preLoaded in ${Date.now() - startTime} ms.\n`);
+    console.log('Loaded Sprites : ', sprites, '\n\n');
+
+    // Create game objects
+    BackGround = new Sprite({
+        position: { x: 0, y: 0 },
+        img: sprites.gameObjects.background,
+        // imgSrc: sprites.gameObjects.background.src,
+    })
+
+    Shop = new Sprite({
+        position: { x: 880, y: CONSTANTS.landingHeight - 447 },
+        img: sprites.gameObjects.shop,
+        // imgSrc: sprites.gameObjects.shop.src,
+        scale: 3.5,
+        maxFrames: 6,
+        frameHold: 10,
+    })
+
+
+    console.log('BackGround : ', BackGround);
+    console.log('Shop : ', Shop);
+    startAnimation();
+});
+
+
+
+const showPlayerInfo = (player1, player2) => {
+    player1Name.innerHTML = player1.name;
+    player2Name.innerHTML = player2.name;
+
+    player1NamePreview.innerHTML = `${player1.name}`;
+    player2NamePreview.innerHTML = `${player2.name}`;
+
+    // Canvas Dimension : ${previewWidth} x ${CONSTANTS.previewHeight} <br>
+    // Sprite Dimension : ${player1.frameWidth} x ${player1.frameHeight} <br>
+    // Sprite Offset : ${player1.spriteOffset.x}, ${player1.spriteOffset.y} <br>
+    // Scale : ${player1.scale} <br>
+    // Scale2 : ${player1.scale2}
+}
 
 const selectPlayer = (count) => {
     count = (count + length) % length;
-    let character = Object.keys(characters)[count];
-    let characterData = characters[character];
-    let imgSrc = characterData.imgSrc;
-    let img = new Image();
-    img.src = imgSrc;
+    let character = Object.keys(characters.list)[count];
+    let characterData = characters.list[character];
+    let img = characterData.img;
 
     let data = {
         name: characterData.name,
         image: img,
         scale: characterData.scale,
+        scale2: characterData.scale2,
         maxFrame: characterData.maxFrames,
         spriteOffset: { ...characterData.spriteOffset },
         currentFrame: 0,
@@ -37,45 +129,36 @@ const selectPlayer = (count) => {
     return data;
 };
 
-
-const showPlayer = (player1, player2) => {
-    player1NamePreview.innerHTML = player1.name;
-    player2NamePreview.innerHTML = player2.name;
-
-    player1Name.innerHTML = player1.name;
-    player2Name.innerHTML = player2.name;
-}
-
-const playerSelection = (count1, count2) => {
-
+const selectPlayers = (count1, count2) => {
     player1PreviewData = selectPlayer(count1);
     player2PreviewData = selectPlayer(count2);
-    showPlayer(player1PreviewData, player2PreviewData);
     console.log(player1PreviewData)
     console.log(player2PreviewData)
+
+    showPlayerInfo(player1PreviewData, player2PreviewData);
 
     player1Left.addEventListener('click', () => {
         count1 = (count1 - 1 + length) % length;
         player1PreviewData = selectPlayer(count1);
-        showPlayer(player1PreviewData, player2PreviewData);
+        showPlayerInfo(player1PreviewData, player2PreviewData);
     });
 
     player1Right.addEventListener('click', () => {
         count1 = (count1 + 1) % length;
         player1PreviewData = selectPlayer(count1);
-        showPlayer(player1PreviewData, player2PreviewData);
+        showPlayerInfo(player1PreviewData, player2PreviewData);
     });
 
     player2Left.addEventListener('click', () => {
         count2 = (count2 - 1 + length) % length;
         player2PreviewData = selectPlayer(count2);
-        showPlayer(player1PreviewData, player2PreviewData);
+        showPlayerInfo(player1PreviewData, player2PreviewData);
     });
 
     player2Right.addEventListener('click', () => {
         count2 = (count2 + 1) % length;
         player2PreviewData = selectPlayer(count2);
-        showPlayer(player1PreviewData, player2PreviewData);
+        showPlayerInfo(player1PreviewData, player2PreviewData);
     });
 
     const draw = (ctx, sprite) => {
@@ -83,17 +166,18 @@ const playerSelection = (count1, count2) => {
             sprite.image,
             sprite.currentFrame * sprite.frameWidth, 0,
             sprite.frameWidth, sprite.frameHeight,
-            // 0,0,
-            (previewWidth / 2) - (sprite.frameWidth * (sprite.scale / 2)), (previewHeight / 2) - (sprite.frameHeight * (sprite.scale / 2)),
+            (CONSTANTS.previewWidth - sprite.frameWidth * sprite.scale) / 2,
+            (CONSTANTS.previewHeight - sprite.frameHeight * sprite.scale),
             sprite.frameWidth * sprite.scale,
             sprite.frameHeight * sprite.scale,
+
         );
     };
 
     const changeFrame = (img) => {
         img.frameElapsed++;
 
-        if (img.frameElapsed % frameHold === 0) {
+        if (img.frameElapsed % CONSTANTS.frameHold === 0) {
             if (img.currentFrame < img.maxFrame - 1) {
                 img.currentFrame++;
             } else {
@@ -119,51 +203,54 @@ const playerSelection = (count1, count2) => {
     }
 
     animate();
-
 }
 
-const createPlayers = (idx1, idx2) => {
 
-    char1 = Object.keys(characters)[idx1];
-    char2 = Object.keys(characters)[idx2];
+const createPlayers = (count1, count2) => {
 
-    player1 = new Player({
-        ...characters[char1], // Spread the properties of 'miyamoto'
+    let char1 = Object.keys(characters.list)[count1];
+    let char2 = Object.keys(characters.list)[count2];
+
+    const player1 = new Player({
+        ...characters.list[char1], // Spread the properties of 'miyamoto'
         position: { x: 0, y: 0 },
         velocity: { x: 0, y: 0 },
         spriteOffset: {
-            x: characters[char1].spriteOffset.x * characters[char1].scale,
-            y: characters[char1].spriteOffset.y * characters[char1].scale,
+            x: Math.floor(characters.list[char1].spriteOffset.x * characters.list[char1].scale),
+            y: Math.floor(characters.list[char1].spriteOffset.y * characters.list[char1].scale),
             dir: 1
         },
         playerOffset: 1,
     });
 
-    player2 = new Player({
-        ...characters[char2], // Spread the properties of 'miyamoto'
+    const player2 = new Player({
+        ...characters.list[char2], // Spread the properties of 'miyamoto'
         position: { x: 1200, y: 0 },
         velocity: { x: 0, y: 0 },
         spriteOffset: {
-            x: characters[char1].spriteOffset.x * characters[char1].scale,
-            y: characters[char1].spriteOffset.y * characters[char1].scale,
+            x: characters.list[char2].spriteOffset.x * characters.list[char2].scale,
+            y: characters.list[char2].spriteOffset.y * characters.list[char2].scale,
             dir: -1
         },
         playerOffset: -1,
     },);
 
+    Player1 = player1;
+    Player2 = player2;
+    Players.push(Player1, Player2);
+    console.log('Player1 : ', Player1);
+    console.log('Player2 : ', Player2);
 };
 
-const gameStart = () => {
-    startGameMessage.classList.add('hidden')
+const startGame = () => {
+    selectionContainer.classList.add('hidden')
     gameOption.classList.add('hidden')
     gameInfo.classList.remove('hidden')
 
     createPlayers(count1, count2);
-    console.log(count1, count2)
-    console.log(player1, player2);
 
-    player1Health.style.width = `${player1.health}%`
-    player2Health.style.width = `${player2.health}%`
+    player1Health.style.width = `${Player1.health}%`
+    player2Health.style.width = `${Player2.health}%`
 
     isGameStarted = true
     showPlayers = true
@@ -231,16 +318,35 @@ const changeDirection = ({ player, enemy }) => {
 };
 
 const playerStanding = (player) => {
-    if (Math.floor(player.velocity.y + player.position.y + player.image.height * player.scale) === landingHeight) {
+    if (Math.floor(
+        player.velocity.y + 
+        player.position.y + 
+        player.image.height * 
+        player.scale) === CONSTANTS.landingHeight
+    ) {
         player.jumpCount = 0
     }
 };
 
 
 
-startGame.addEventListener('click', gameStart)
 
-playAgain.addEventListener('click', () => {
-    window.location.reload();
-    showPlayers = false
-})
+export {
+    count1,
+    count2,
+    showPlayers,
+    isGameStarted,
+
+    startGame,
+    selectPlayers,
+
+    showPlayerInfo,
+    collision,
+    changeDirection,
+    playerStanding,
+
+    BackGround,
+    Shop,
+    Player1,
+    Player2,
+}

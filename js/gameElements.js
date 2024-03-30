@@ -1,5 +1,12 @@
 console.log('gameElements.js loaded')
 
+import {
+    ctx,
+    CONSTANTS
+} from './constants.js';
+
+let LoadedSprites = {};
+
 const gameSprites = {
     gameObjects: {
         background: '../assets/backgroundSprites/background.png',
@@ -7,329 +14,343 @@ const gameSprites = {
     },
 
     miyamoto: {
-        idle: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
-        attack1: '../assets/charactersSprites/Miyamoto Mushashi/Attack1.png',
-        run: '../assets/charactersSprites/Miyamoto Mushashi/Run.png',
-        jump: '../assets/charactersSprites/Miyamoto Mushashi/Jump.png',
-        takehit: '../assets/charactersSprites/Miyamoto Mushashi/Take Hit.png',
-        fall: '../assets/charactersSprites/Miyamoto Mushashi/Fall.png',
-        death: '../assets/charactersSprites/Miyamoto Mushashi/Death.png',
+        idle: '../assets/charactersSprites-v2/Miyamoto Mushashi/Idle.png',
+        attack1: '../assets/charactersSprites-v2/Miyamoto Mushashi/Attack1.png',
+        run: '../assets/charactersSprites-v2/Miyamoto Mushashi/Run.png',
+        jump: '../assets/charactersSprites-v2/Miyamoto Mushashi/Jump.png',
+        takehit: '../assets/charactersSprites-v2/Miyamoto Mushashi/Take Hit.png',
+        fall: '../assets/charactersSprites-v2/Miyamoto Mushashi/Fall.png',
+        death: '../assets/charactersSprites-v2/Miyamoto Mushashi/Death.png',
     },
 
     kojiro: {
-        idle: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
-        attack1: '../assets/charactersSprites/Kojiro Sasaki/Attack1.png',
-        run: '../assets/charactersSprites/Kojiro Sasaki/Run.png',
-        jump: '../assets/charactersSprites/Kojiro Sasaki/Jump.png',
-        takehit: '../assets/charactersSprites/Kojiro Sasaki/Take Hit.png',
-        fall: '../assets/charactersSprites/Kojiro Sasaki/Fall.png',
-        death: '../assets/charactersSprites/Kojiro Sasaki/Death.png',
+        idle: '../assets/charactersSprites-v2/Kojiro Sasaki/Idle.png',
+        attack1: '../assets/charactersSprites-v2/Kojiro Sasaki/Attack1.png',
+        run: '../assets/charactersSprites-v2/Kojiro Sasaki/Run.png',
+        jump: '../assets/charactersSprites-v2/Kojiro Sasaki/Jump.png',
+        takehit: '../assets/charactersSprites-v2/Kojiro Sasaki/Take Hit.png',
+        fall: '../assets/charactersSprites-v2/Kojiro Sasaki/Fall.png',
+        death: '../assets/charactersSprites-v2/Kojiro Sasaki/Death.png',
     },
 
     evilWizard: {
-        idle: '../assets/charactersSprites/Evil Wizard/Idle.png',
-        attack1: '../assets/charactersSprites/Evil Wizard/Attack1.png',
-        run: '../assets/charactersSprites/Evil Wizard/Run.png',
-        jump: '../assets/charactersSprites/Evil Wizard/Jump.png',
-        takehit: '../assets/charactersSprites/Evil Wizard/Take Hit.png',
-        fall: '../assets/charactersSprites/Evil Wizard/Fall.png',
-        death: '../assets/charactersSprites/Evil Wizard/Death.png',
+        idle: '../assets/charactersSprites-v2/Evil Wizard/Idle.png',
+        attack1: '../assets/charactersSprites-v2/Evil Wizard/Attack1.png',
+        run: '../assets/charactersSprites-v2/Evil Wizard/Run.png',
+        jump: '../assets/charactersSprites-v2/Evil Wizard/Jump.png',
+        takehit: '../assets/charactersSprites-v2/Evil Wizard/Take Hit.png',
+        fall: '../assets/charactersSprites-v2/Evil Wizard/Fall.png',
+        death: '../assets/charactersSprites-v2/Evil Wizard/Death.png',
     },
 
     fantasyWarrior: {
-        idle: '../assets/charactersSprites/Fantasy Warrior/Idle.png',
-        attack1: '../assets/charactersSprites/Fantasy Warrior/Attack1.png',
-        run: '../assets/charactersSprites/Fantasy Warrior/Run.png',
-        jump: '../assets/charactersSprites/Fantasy Warrior/Jump.png',
-        takehit: '../assets/charactersSprites/Fantasy Warrior/Take Hit.png',
-        fall: '../assets/charactersSprites/Fantasy Warrior/Fall.png',
-        death: '../assets/charactersSprites/Fantasy Warrior/Death.png',
+        idle: '../assets/charactersSprites-v2/Fantasy Warrior/Idle.png',
+        attack1: '../assets/charactersSprites-v2/Fantasy Warrior/Attack1.png',
+        run: '../assets/charactersSprites-v2/Fantasy Warrior/Run.png',
+        jump: '../assets/charactersSprites-v2/Fantasy Warrior/Jump.png',
+        takehit: '../assets/charactersSprites-v2/Fantasy Warrior/Take Hit.png',
+        fall: '../assets/charactersSprites-v2/Fantasy Warrior/Fall.png',
+        death: '../assets/charactersSprites-v2/Fantasy Warrior/Death.png',
     },
 
     medievalKing: {
-        idle: '../assets/charactersSprites/Medieval King/Idle.png',
-        attack1: '../assets/charactersSprites/Medieval King/Attack1.png',
-        run: '../assets/charactersSprites/Medieval King/Run.png',
-        jump: '../assets/charactersSprites/Medieval King/Jump.png',
-        takehit: '../assets/charactersSprites/Medieval King/Take Hit.png',
-        fall: '../assets/charactersSprites/Medieval King/Fall.png',
-        death: '../assets/charactersSprites/Medieval King/Death.png',
+        idle: '../assets/charactersSprites-v2/Medieval King/Idle.png',
+        attack1: '../assets/charactersSprites-v2/Medieval King/Attack1.png',
+        run: '../assets/charactersSprites-v2/Medieval King/Run.png',
+        jump: '../assets/charactersSprites-v2/Medieval King/Jump.png',
+        takehit: '../assets/charactersSprites-v2/Medieval King/Take Hit.png',
+        fall: '../assets/charactersSprites-v2/Medieval King/Fall.png',
+        death: '../assets/charactersSprites-v2/Medieval King/Death.png',
     },
 };
 
 const characters = {
-    evilWizard: {
-        name: 'Evil Wizard',
-        imgSrc: gameSprites.evilWizard.idle,
-        maxFrames: 8,
-        scale: 2.4,
-        frameHold: 20,
-        dimension: {
-            width: 35,
-            height: 57,
+    list: {
+        evilWizard: {
+            name: 'Evil Wizard',
+            maxFrames: 8,
+            scale: 2.4,
+            scale2: 1,
+            frameHold: 20,
+            dimension: {
+                width: 35,
+                height: 57,
+            },
+            spriteOffset: {
+                x: 108,
+                y: 48,
+            },
+            attackBox: {
+                offset: { dir: 1, y: 10 },
+                width: 60,
+                height: 25,
+            },
         },
-        spriteOffset: {
-            x: 108 * 1,
-            y: 0,
+        fantasyWarrior: {
+            name: 'Fantasy Warrior',
+            maxFrames: 10,
+            scale: 3,
+            scale2: 1,
+            frameHold: 20,
+            dimension: {
+                width: 27,
+                height: 45,
+            },
+            spriteOffset: {
+                x: 66,
+                y: 22,
+            },
+            attackBox: {
+                offset: { dir: 1, y: 10 },
+                width: 35,
+                height: 20,
+            },
         },
-        attackBox: {
-            offset: { dir: 1, y: 10 },
-            width: 60,
-            height: 25,
+        kojiro: {
+            name: 'Kojiro Sasaki',
+            maxFrames: 4,
+            scale: 2.5,
+            scale2: 1,
+            frameHold: 25,
+            dimension: {
+                width: 33,
+                height: 56,
+            },
+            spriteOffset: {
+                x: 81,
+                y: 10,
+            },
+            attackBox: {
+                offset: { dir: 1, y: 10 },
+                width: 55,
+                height: 25,
+            },
         },
-        sprites: {
-            idle: {
-                imageSrc: gameSprites.evilWizard.idle,
-                maxFrames: 8
+        medievalKing: {
+            name: 'Medieval King',
+            maxFrames: 8,
+            scale: 2.5,
+            scale2: 1,
+            frameHold: 20,
+            dimension: {
+                width: 32,
+                height: 55,
             },
-            run: {
-                imageSrc: gameSprites.evilWizard.run,
-                maxFrames: 8
+            spriteOffset: {
+                x: 64,
+                y: 14,
             },
-            jump: {
-                imageSrc: gameSprites.evilWizard.jump,
-                maxFrames: 2
+            attackBox: {
+                offset: { dir: 1, y: 10 },
+                width: 49,
+                height: 22,
             },
-            fall: {
-                imageSrc: gameSprites.evilWizard.fall,
-                maxFrames: 2
+        },
+        miyamoto: {
+            name: 'Miyamoto Mushashi',
+            maxFrames: 8,
+            scale: 2.5,
+            scale2: 1,
+            frameHold: 15,
+            dimension: {
+                width: 32,
+                height: 58,
             },
-            attack1: {
-                imageSrc: gameSprites.evilWizard.attack1,
-                maxFrames: 8
+            spriteOffset: {
+                x: 76,
+                y: 22,
             },
-            takeHit: {
-                imageSrc: gameSprites.evilWizard.takehit,
-                maxFrames: 3
-            },
-            death: {
-                imageSrc: gameSprites.evilWizard.death,
-                maxFrames: 7
+            attackBox: {
+                offset: { dir: 1, y: 10 },
+                width: 55,
+                height: 25,
             }
         },
     },
 
-    fantasyWarrior: {
-        name: 'Fantasy Warrior',
-        imgSrc: gameSprites.fantasyWarrior.idle,
-        maxFrames: 10,
-        scale: 3,
-        frameHold: 20,
-        dimension: {
-            width: 27,
-            height: 45,
-        },
-        spriteOffset: {
-            x: 66,
-            y: 0,
-        },
-        attackBox: {
-            offset: { dir: 1, y: 10 },
-            width: 35,
-            height: 20,
-        },
-        sprites: {
+    get numbers(){
+        return Object.keys(this.list).length
+    },
+
+    preload: function () {
+        characters.list.evilWizard.img = LoadedSprites.evilWizard.idle
+        characters.list.evilWizard.sprites = {
             idle: {
-                imageSrc: gameSprites.fantasyWarrior.idle,
+                image: LoadedSprites.evilWizard.idle,
+                maxFrames: 8
+            },
+            run: {
+                image: LoadedSprites.evilWizard.run,
+                maxFrames: 8
+            },
+            jump: {
+                image: LoadedSprites.evilWizard.jump,
+                maxFrames: 2
+            },
+            fall: {
+                image: LoadedSprites.evilWizard.fall,
+                maxFrames: 2
+            },
+            attack1: {
+                image: LoadedSprites.evilWizard.attack1,
+                maxFrames: 8
+            },
+            takeHit: {
+                image: LoadedSprites.evilWizard.takehit,
+                maxFrames: 3
+            },
+            death: {
+                image: LoadedSprites.evilWizard.death,
+                maxFrames: 7
+            }
+        }
+
+        characters.list.fantasyWarrior.img = LoadedSprites.fantasyWarrior.idle
+        characters.list.fantasyWarrior.sprites = {
+            idle: {
+                image: LoadedSprites.fantasyWarrior.idle,
                 maxFrames: 10
             },
             run: {
-                imageSrc: gameSprites.fantasyWarrior.run,
+                image: LoadedSprites.fantasyWarrior.run,
                 maxFrames: 8
             },
             jump: {
-                imageSrc: gameSprites.fantasyWarrior.jump,
+                image: LoadedSprites.fantasyWarrior.jump,
                 maxFrames: 3
             },
             fall: {
-                imageSrc: gameSprites.fantasyWarrior.fall,
+                image: LoadedSprites.fantasyWarrior.fall,
                 maxFrames: 3
             },
             attack1: {
-                imageSrc: gameSprites.fantasyWarrior.attack1,
+                image: LoadedSprites.fantasyWarrior.attack1,
                 maxFrames: 7
             },
             takeHit: {
-                imageSrc: gameSprites.fantasyWarrior.takehit,
+                image: LoadedSprites.fantasyWarrior.takehit,
                 maxFrames: 3
             },
             death: {
-                imageSrc: gameSprites.fantasyWarrior.death,
+                image: LoadedSprites.fantasyWarrior.death,
                 maxFrames: 7
             }
-        },
-    },
+        }
 
-    kojiro: {
-        name: 'Kojiro Sasaki',
-        imgSrc: gameSprites.kojiro.idle,
-        maxFrames: 4,
-        scale: 2.5,
-        frameHold: 25,
-        dimension: {
-            width: 33,
-            height: 56,
-        },
-        spriteOffset: {
-            x: 81,
-            y: 0,
-        },
-        attackBox: {
-            offset: { dir: 1, y: 10 },
-            width: 55,
-            height: 25,
-        },
-        sprites: {
+        characters.list.kojiro.img = LoadedSprites.kojiro.idle
+        characters.list.kojiro.sprites = {
             idle: {
-                imageSrc: gameSprites.kojiro.idle,
+                image: LoadedSprites.kojiro.idle,
                 maxFrames: 4
             },
             run: {
-                imageSrc: gameSprites.kojiro.run,
+                image: LoadedSprites.kojiro.run,
                 maxFrames: 8
             },
             jump: {
-                imageSrc: gameSprites.kojiro.jump,
+                image: LoadedSprites.kojiro.jump,
                 maxFrames: 2
             },
             fall: {
-                imageSrc: gameSprites.kojiro.fall,
+                image: LoadedSprites.kojiro.fall,
                 maxFrames: 2
             },
             attack1: {
-                imageSrc: gameSprites.kojiro.attack1,
+                image: LoadedSprites.kojiro.attack1,
                 maxFrames: 4
             },
             takeHit: {
-                imageSrc: gameSprites.kojiro.takehit,
+                image: LoadedSprites.kojiro.takehit,
                 maxFrames: 3
             },
             death: {
-                imageSrc: gameSprites.kojiro.death,
+                image: LoadedSprites.kojiro.death,
                 maxFrames: 7
-            },
-        },
+            }
+        }
 
-    },
-
-    medievalKing: {
-        name: 'Medieval King',
-        imgSrc: gameSprites.medievalKing.idle,
-        maxFrames: 8,
-        scale: 2.5,
-        frameHold: 20,
-        dimension: {
-            width: 32,
-            height: 55,
-        },
-        spriteOffset: {
-            x: 64,
-            y: 0,
-        },
-        attackBox: {
-            offset: { dir: 1, y: 10 },
-            width: 49,
-            height: 22,
-        },
-
-        sprites: {
+        characters.list.medievalKing.img = LoadedSprites.medievalKing.idle
+        characters.list.medievalKing.sprites = {
             idle: {
-                imageSrc: gameSprites.medievalKing.idle,
+                image: LoadedSprites.medievalKing.idle,
                 maxFrames: 8
             },
             run: {
-                imageSrc: gameSprites.medievalKing.run,
+                image: LoadedSprites.medievalKing.run,
                 maxFrames: 8
             },
             jump: {
-                imageSrc: gameSprites.medievalKing.jump,
+                image: LoadedSprites.medievalKing.jump,
                 maxFrames: 2
             },
             fall: {
-                imageSrc: gameSprites.medievalKing.fall,
+                image: LoadedSprites.medievalKing.fall,
                 maxFrames: 2
             },
             attack1: {
-                imageSrc: gameSprites.medievalKing.attack1,
+                image: LoadedSprites.medievalKing.attack1,
                 maxFrames: 4
             },
             takeHit: {
-                imageSrc: gameSprites.medievalKing.takehit,
+                image: LoadedSprites.medievalKing.takehit,
                 maxFrames: 4
             },
             death: {
-                imageSrc: gameSprites.medievalKing.death,
+                image: LoadedSprites.medievalKing.death,
                 maxFrames: 6
             }
-        },
-    },
+        }
 
-    miyamoto: {
-        name: 'Miyamoto Mushashi',
-        imgSrc: gameSprites.miyamoto.idle,
-        maxFrames: 8,
-        scale: 2.5,
-        frameHold: 15,
-        dimension: {
-            width: 32,
-            height: 58,
-        },
-        spriteOffset: {
-            x: 76,
-            y: 0,
-        },
-        attackBox: {
-            offset: { dir: 1, y: 10 },
-            width: 55,
-            height: 25,
-        },
-        sprites: {
+        characters.list.miyamoto.img = LoadedSprites.miyamoto.idle
+        characters.list.miyamoto.sprites = {
             idle: {
-                imageSrc: gameSprites.miyamoto.idle,
+                image: LoadedSprites.miyamoto.idle,
                 maxFrames: 8
             },
             run: {
-                imageSrc: gameSprites.miyamoto.run,
+                image: LoadedSprites.miyamoto.run,
                 maxFrames: 8
             },
             jump: {
-                imageSrc: gameSprites.miyamoto.jump,
+                image: LoadedSprites.miyamoto.jump,
                 maxFrames: 2
             },
             fall: {
-                imageSrc: gameSprites.miyamoto.fall,
+                image: LoadedSprites.miyamoto.fall,
                 maxFrames: 2
             },
             attack1: {
-                imageSrc: gameSprites.miyamoto.attack1,
+                image: LoadedSprites.miyamoto.attack1,
                 maxFrames: 6
             },
             takeHit: {
-                imageSrc: gameSprites.miyamoto.takehit,
+                image: LoadedSprites.miyamoto.takehit,
                 maxFrames: 4
             },
             death: {
-                imageSrc: gameSprites.miyamoto.death,
+                image: LoadedSprites.miyamoto.death,
                 maxFrames: 6
             }
-        },
+        }
     },
-};
+}
 
 
 class Sprite {
     constructor({
         position,
         spriteOffset = { x: 0, y: 0, dir: 1 },
-        imgSrc,
+        img,
+        // imgSrc,
         scale = 1,
         maxFrames = 1,
         frameHold
     }) {
         this.position = position
         this.spriteOffset = spriteOffset
-        this.image = new Image()
-        this.image.src = imgSrc
+        this.image = img
+        // this.image = new Image()
+        // this.image.src = imgSrc
         this.scale = scale
         this.maxFrames = maxFrames
         this.currentFrame = 0
@@ -356,19 +377,19 @@ class Sprite {
 
             ctx.drawImage(
                 this.image,
-                (1 + this.currentFrame) * this.frameWidth, 0,                       // Starting position for clipping (x, y)
-                (-1 * this.frameWidth), this.frameHeight,                           // Width and height of the clipped image
+                (1 + this.currentFrame) * this.frameWidth, 0,                                    // Starting position for clipping (x, y)
+                (-1 * this.frameWidth), this.frameHeight,                                        // Width and height of the clipped image
                 (-1 * this.frameWidth) - this.position.x - this.spriteOffset.x + this.width,     // X-Position on the canvas to draw the image
-                this.position.y - this.spriteOffset.y,                              // Y-Position on the canvas to draw the image 
-                this.frameWidth * this.scale,                                       // Width of the drawn image on the canvas
-                this.image.height * this.scale                                      // Height of the drawn image on the canvas
+                this.position.y - this.spriteOffset.y,                                           // Y-Position on the canvas to draw the image 
+                this.frameWidth * this.scale,                                                    // Width of the drawn image on the canvas
+                this.image.height * this.scale                                                   // Height of the drawn image on the canvas
             );
 
             ctx.restore(); // Restore the last saved state
         }
 
         // draw a rectangle around the player
-        if (this,this.frameWidth === gameCanvasWidth) {
+        if (this, this.frameWidth === CONSTANTS.gameCanvasWidth) {
             ctx.fillStyle = '#0000FF50';
             ctx.fillRect(
                 this.position.x - this.spriteOffset.x,
@@ -412,40 +433,33 @@ class Player extends Sprite {
     constructor({
         position,
         velocity,
-        imgSrc,
+        img,
+        // imgSrc,
         maxFrames = 1,
         scale = 1,
         frameHold,
         sprites,
         spriteOffset,
         playerOffset,
-        dimension = {
-            width: undefined,
-            height: undefined
-        },
-        attackBox = {
-            offset: 1,
-            width: undefined,
-            height: undefined
-        },
+        dimension,
+        attackBox,
+        name,
     }) {
         super({
             position, // store the position of the player
-            imgSrc,
+            img,
             maxFrames,
             scale,
             frameHold,
             spriteOffset,
         })
 
-        this.currentFrame = 0
-        this.frameElapsed = 0
-        this.frameWidth = this.image.width / this.maxFrames
         this.sprites = sprites
+        this.name = name
 
         // Width and height of the player
-        this.width = dimension.width * this.scale
-        this.height = dimension.height * this.scale
+        this.width = Math.floor(dimension.width * this.scale)
+        this.height = Math.floor(dimension.height * this.scale)
 
         this.velocity = velocity // store the velocity of the player
         this.playerOffset = playerOffset
@@ -467,18 +481,11 @@ class Player extends Sprite {
                 y: this.position.y
             }
         }
-
-        for (const sprite in this.sprites) {
-            sprites[sprite].image = new Image()
-            sprites[sprite].image.src = sprites[sprite].imageSrc
-        }
     }
 
     update() {
         this.draw()
-        if (!this.dead) {
-            this.changeFrame()
-        }
+        if (!this.dead) { this.changeFrame() }
 
         if (this.spriteOffset.dir === 1) {
             this.attackBox.position.x = this.position.x + this.width
@@ -488,7 +495,6 @@ class Player extends Sprite {
         }
 
         this.attackBox.position.y = this.position.y - this.attackBox.height + (this.image.height - this.attackBox.offset.y) * this.scale
-
         ctx.fillStyle = this.spriteOffset.dir === 1 ? '#FF000050' : '#00FF0050';
 
         ctx.fillRect(
@@ -499,11 +505,15 @@ class Player extends Sprite {
         );
 
         this.position.x += this.velocity.x
-        if (Math.floor(this.position.y + this.image.height * this.scale + this.velocity.y) > landingHeight) {
-            // if (Math.floor(this.position.y + this.height + this.velocity.y) > landingHeight) {
+        if (Math.floor(
+            this.position.y +
+            this.image.height *
+            this.scale +
+            this.velocity.y) > CONSTANTS.landingHeight) {
+            // if (Math.floor(this.position.y + this.height + this.velocity.y) > CONSTANTS.landingHeight) {
             this.velocity.y = 0
         } else {
-            this.velocity.y += gravity
+            this.velocity.y += CONSTANTS.gravity
             this.position.y += this.velocity.y
         }
     }
@@ -598,35 +608,31 @@ class Player extends Sprite {
 }
 
 
-let Sprites = {};
-const totalCharacters = Object.keys(characters).length;
-
-
 // Preload images
 const preloadSprites = (spritesObject, callback) => {
 
     let loadedSprites = 0;
     const totalSprites = Object.keys(spritesObject).length;
 
-    for (const spriteKey in spritesObject) {
+    for (const sprite in spritesObject) {
 
         let images = {}
         let loadedImages = 0;
-        const totalImages = Object.keys(spritesObject[spriteKey]).length;
+        const totalImages = Object.keys(spritesObject[sprite]).length;
 
-        for (const imageKey in spritesObject[spriteKey]) {
-            let newTime = Date.now();
+        for (const imageKey in spritesObject[sprite]) {
             const img = new Image();
-            img.src = spritesObject[spriteKey][imageKey];
+            img.src = spritesObject[sprite][imageKey];
 
             img.onload = () => {
                 loadedImages++;
-                console.log(`Image with key ${imageKey} is loaded in  ${Date.now() - newTime} ms. .`);
+                // console.log(`Image with key ${imageKey} is loaded in  ${Date.now() - newTime} ms. .`);
                 if (loadedImages >= totalImages) {
                     loadedSprites++;
-                    console.log(`Sprite with key ${spriteKey} is loaded.`);
+                    // console.log(`Sprite with name ${sprite} is loaded.`);
                     if (loadedSprites >= totalSprites) {
-                        callback(Sprites);
+                        callback(LoadedSprites);
+                        characters.preload();
                     }
                 }
             }
@@ -638,7 +644,18 @@ const preloadSprites = (spritesObject, callback) => {
             images[imageKey] = img;
         }
 
-        Sprites[spriteKey] = images;
-
+        LoadedSprites[sprite] = images;
     }
+
+    return characters;
 };
+
+
+export {
+    Sprite,
+    Player,
+    gameSprites,
+    characters,
+    LoadedSprites,
+    preloadSprites
+}
