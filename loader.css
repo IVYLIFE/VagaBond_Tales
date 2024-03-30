@@ -293,23 +293,3 @@ body {
   }
 }
 
-
-
-
-
-/* @media screen and (max-height: 785px) {
-  #gameCanvas {
-    height: 100%;
-  }
-} */
-
-/* @media screen and (max-width: 600px) {
-  body {
-    transform: rotate(90deg);
-  }
-
-  #gameCanvas {
-    height: 100vw;
-    width: 100vh;
-  }
-} */
