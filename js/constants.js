@@ -1,16 +1,17 @@
 console.log('constants.js loaded');
 
-const frameHold      =  5;
-const gravity        =  0.2;
-const landingHeight  =  655;
-const velocity_X     =  2.5;
-const velocity_Y     =  8.5;
+const frameHold        =  5;
+const gravity          =  0.2;
+const landingHeight    =  655;
+const velocity_X       =  2.5;
+const velocity_Y       =  8.5;
+const damage           =  10;
 
-const gameCanvasWidth = 1400;
+const gameCanvasWidth  = 1400;
 const gameCanvasHeight = 785;
-const previewWidth = 220;
-const previewHeight = 220;
-const gameDuration = 60;
+const previewWidth     = 220;
+const previewHeight    = 220;
+const gameDuration     = 60;
 
 
 
@@ -68,6 +69,7 @@ const CONSTANTS = {
     landingHeight,
     velocity_X,
     velocity_Y,
+    damage,
 
     gameCanvasWidth,
     gameCanvasHeight,

@@ -532,7 +532,7 @@ class Player extends Sprite {
     }
 
     takeHit() {
-        this.health -= 40;
+        this.health -= CONSTANTS.damage;
 
         if (this.health <= 0) {
             this.health = 0
