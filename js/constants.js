@@ -24,6 +24,7 @@ const ctx1 = player1PreviewCanvas.getContext('2d');
 const ctx2 = player2PreviewCanvas.getContext('2d');
 
 
+
 const player1Name = document.querySelector('#p1');
 const player2Name = document.querySelector('#p2');
 const player1NamePreview = document.querySelector('#player1Name');
@@ -100,6 +101,7 @@ export{
     startGameBtn,
     playAgainBtn,
     selectionContainer,
+    endGameMessage,
 
     player1Health,
     player2Health,

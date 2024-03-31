@@ -3,7 +3,8 @@ console.log('game.js loaded')
 import { CONSTANTS, canvas, ctx } from "./constants.js";
 import { 
     isGameStarted, 
-    showPlayers, 
+    showPlayers,
+    countDownId, 
     BackGround, 
     Shop,
     Player1,
@@ -11,6 +12,7 @@ import {
     playerStanding,
     changeDirection,
     collision,
+    gameOver,
 } from "./utils.js";
 
 let animationId;
@@ -252,14 +254,10 @@ const startAnimation = () => {
 
             // ================================== Game Over ==================================
             if (Player1.health <= 0 || Player2.health <= 0) {
-                gameOver({ player: player1, enemy: player2, countDownId });
+                gameOver({ player: Player1, enemy: Player2, countDownId });
                 return;
             }
         }
-        // else {
-        //     Player1.changeSprite('idle');
-        //     Player2.changeSprite('idle');
-        // }
     }
 
     function renderGame() {

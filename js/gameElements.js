@@ -14,53 +14,53 @@ const gameSprites = {
     },
 
     miyamoto: {
-        idle: '../assets/charactersSprites-v2/Miyamoto Mushashi/Idle.png',
-        attack1: '../assets/charactersSprites-v2/Miyamoto Mushashi/Attack1.png',
-        run: '../assets/charactersSprites-v2/Miyamoto Mushashi/Run.png',
-        jump: '../assets/charactersSprites-v2/Miyamoto Mushashi/Jump.png',
-        takehit: '../assets/charactersSprites-v2/Miyamoto Mushashi/Take Hit.png',
-        fall: '../assets/charactersSprites-v2/Miyamoto Mushashi/Fall.png',
-        death: '../assets/charactersSprites-v2/Miyamoto Mushashi/Death.png',
+        idle: '../assets/charactersSprites/Miyamoto Mushashi/Idle.png',
+        attack1: '../assets/charactersSprites/Miyamoto Mushashi/Attack1.png',
+        run: '../assets/charactersSprites/Miyamoto Mushashi/Run.png',
+        jump: '../assets/charactersSprites/Miyamoto Mushashi/Jump.png',
+        takehit: '../assets/charactersSprites/Miyamoto Mushashi/Take Hit.png',
+        fall: '../assets/charactersSprites/Miyamoto Mushashi/Fall.png',
+        death: '../assets/charactersSprites/Miyamoto Mushashi/Death.png',
     },
 
     kojiro: {
-        idle: '../assets/charactersSprites-v2/Kojiro Sasaki/Idle.png',
-        attack1: '../assets/charactersSprites-v2/Kojiro Sasaki/Attack1.png',
-        run: '../assets/charactersSprites-v2/Kojiro Sasaki/Run.png',
-        jump: '../assets/charactersSprites-v2/Kojiro Sasaki/Jump.png',
-        takehit: '../assets/charactersSprites-v2/Kojiro Sasaki/Take Hit.png',
-        fall: '../assets/charactersSprites-v2/Kojiro Sasaki/Fall.png',
-        death: '../assets/charactersSprites-v2/Kojiro Sasaki/Death.png',
+        idle: '../assets/charactersSprites/Kojiro Sasaki/Idle.png',
+        attack1: '../assets/charactersSprites/Kojiro Sasaki/Attack1.png',
+        run: '../assets/charactersSprites/Kojiro Sasaki/Run.png',
+        jump: '../assets/charactersSprites/Kojiro Sasaki/Jump.png',
+        takehit: '../assets/charactersSprites/Kojiro Sasaki/Take Hit.png',
+        fall: '../assets/charactersSprites/Kojiro Sasaki/Fall.png',
+        death: '../assets/charactersSprites/Kojiro Sasaki/Death.png',
     },
 
     evilWizard: {
-        idle: '../assets/charactersSprites-v2/Evil Wizard/Idle.png',
-        attack1: '../assets/charactersSprites-v2/Evil Wizard/Attack1.png',
-        run: '../assets/charactersSprites-v2/Evil Wizard/Run.png',
-        jump: '../assets/charactersSprites-v2/Evil Wizard/Jump.png',
-        takehit: '../assets/charactersSprites-v2/Evil Wizard/Take Hit.png',
-        fall: '../assets/charactersSprites-v2/Evil Wizard/Fall.png',
-        death: '../assets/charactersSprites-v2/Evil Wizard/Death.png',
+        idle: '../assets/charactersSprites/Evil Wizard/Idle.png',
+        attack1: '../assets/charactersSprites/Evil Wizard/Attack1.png',
+        run: '../assets/charactersSprites/Evil Wizard/Run.png',
+        jump: '../assets/charactersSprites/Evil Wizard/Jump.png',
+        takehit: '../assets/charactersSprites/Evil Wizard/Take Hit.png',
+        fall: '../assets/charactersSprites/Evil Wizard/Fall.png',
+        death: '../assets/charactersSprites/Evil Wizard/Death.png',
     },
 
     fantasyWarrior: {
-        idle: '../assets/charactersSprites-v2/Fantasy Warrior/Idle.png',
-        attack1: '../assets/charactersSprites-v2/Fantasy Warrior/Attack1.png',
-        run: '../assets/charactersSprites-v2/Fantasy Warrior/Run.png',
-        jump: '../assets/charactersSprites-v2/Fantasy Warrior/Jump.png',
-        takehit: '../assets/charactersSprites-v2/Fantasy Warrior/Take Hit.png',
-        fall: '../assets/charactersSprites-v2/Fantasy Warrior/Fall.png',
-        death: '../assets/charactersSprites-v2/Fantasy Warrior/Death.png',
+        idle: '../assets/charactersSprites/Fantasy Warrior/Idle.png',
+        attack1: '../assets/charactersSprites/Fantasy Warrior/Attack1.png',
+        run: '../assets/charactersSprites/Fantasy Warrior/Run.png',
+        jump: '../assets/charactersSprites/Fantasy Warrior/Jump.png',
+        takehit: '../assets/charactersSprites/Fantasy Warrior/Take Hit.png',
+        fall: '../assets/charactersSprites/Fantasy Warrior/Fall.png',
+        death: '../assets/charactersSprites/Fantasy Warrior/Death.png',
     },
 
     medievalKing: {
-        idle: '../assets/charactersSprites-v2/Medieval King/Idle.png',
-        attack1: '../assets/charactersSprites-v2/Medieval King/Attack1.png',
-        run: '../assets/charactersSprites-v2/Medieval King/Run.png',
-        jump: '../assets/charactersSprites-v2/Medieval King/Jump.png',
-        takehit: '../assets/charactersSprites-v2/Medieval King/Take Hit.png',
-        fall: '../assets/charactersSprites-v2/Medieval King/Fall.png',
-        death: '../assets/charactersSprites-v2/Medieval King/Death.png',
+        idle: '../assets/charactersSprites/Medieval King/Idle.png',
+        attack1: '../assets/charactersSprites/Medieval King/Attack1.png',
+        run: '../assets/charactersSprites/Medieval King/Run.png',
+        jump: '../assets/charactersSprites/Medieval King/Jump.png',
+        takehit: '../assets/charactersSprites/Medieval King/Take Hit.png',
+        fall: '../assets/charactersSprites/Medieval King/Fall.png',
+        death: '../assets/charactersSprites/Medieval King/Death.png',
     },
 };
 
@@ -341,7 +341,6 @@ class Sprite {
         position,
         spriteOffset = { x: 0, y: 0, dir: 1 },
         img,
-        // imgSrc,
         scale = 1,
         maxFrames = 1,
         frameHold
@@ -349,8 +348,6 @@ class Sprite {
         this.position = position
         this.spriteOffset = spriteOffset
         this.image = img
-        // this.image = new Image()
-        // this.image.src = imgSrc
         this.scale = scale
         this.maxFrames = maxFrames
         this.currentFrame = 0
@@ -367,7 +364,8 @@ class Sprite {
                 this.currentFrame * this.frameWidth, 0,          // Starting position for clipping (x, y)
                 this.frameWidth, this.frameHeight,               // Width and height of the clipped image
                 this.position.x - this.spriteOffset.x,           // X-Position on the canvas to draw the image
-                this.position.y - this.spriteOffset.y,           // Y-Position on the canvas to draw the image
+                this.position.y,                                 // Y-Position on the canvas to draw the image
+                // this.position.y - this.spriteOffset.y,           // Y-Position on the canvas to draw the image
                 this.frameWidth * this.scale,                    // Width of the drawn image on the canvas
                 this.image.height * this.scale                   // Height of the drawn image on the canvas
             )
@@ -375,12 +373,15 @@ class Sprite {
             ctx.save();
             ctx.scale(-1, 1);
 
+            ctx.fillStyle = "blue"; // Fill color
+            ctx.fillRect(-1200, 670, this.width, 100); // (x, y, width, height)
+
             ctx.drawImage(
                 this.image,
                 (1 + this.currentFrame) * this.frameWidth, 0,                                    // Starting position for clipping (x, y)
                 (-1 * this.frameWidth), this.frameHeight,                                        // Width and height of the clipped image
-                (-1 * this.frameWidth) - this.position.x - this.spriteOffset.x + this.width,     // X-Position on the canvas to draw the image
-                this.position.y - this.spriteOffset.y,                                           // Y-Position on the canvas to draw the image 
+                -this.position.x - this.spriteOffset.x - this.width,                             // X-Position on the canvas to draw the image
+                this.position.y,                                                                 // Y-Position on the canvas to draw the image 
                 this.frameWidth * this.scale,                                                    // Width of the drawn image on the canvas
                 this.image.height * this.scale                                                   // Height of the drawn image on the canvas
             );
@@ -389,7 +390,7 @@ class Sprite {
         }
 
         // draw a rectangle around the player
-        if (this, this.frameWidth === CONSTANTS.gameCanvasWidth) {
+        if (this.frameWidth === CONSTANTS.gameCanvasWidth) {
             ctx.fillStyle = '#0000FF50';
             ctx.fillRect(
                 this.position.x - this.spriteOffset.x,
@@ -434,7 +435,6 @@ class Player extends Sprite {
         position,
         velocity,
         img,
-        // imgSrc,
         maxFrames = 1,
         scale = 1,
         frameHold,
@@ -488,11 +488,12 @@ class Player extends Sprite {
         if (!this.dead) { this.changeFrame() }
 
         if (this.spriteOffset.dir === 1) {
-            this.attackBox.position.x = this.position.x + this.width
+            this.attackBox.position.x = this.position.x + this.width + this.attackBox.width
         }
         else {
             this.attackBox.position.x = this.position.x - this.attackBox.width
         }
+
 
         this.attackBox.position.y = this.position.y - this.attackBox.height + (this.image.height - this.attackBox.offset.y) * this.scale
         ctx.fillStyle = this.spriteOffset.dir === 1 ? '#FF000050' : '#00FF0050';
@@ -500,7 +501,7 @@ class Player extends Sprite {
         ctx.fillRect(
             this.attackBox.position.x,
             this.attackBox.position.y,
-            this.attackBox.width,
+            this.spriteOffset.dir === 1 ? -this.attackBox.width : this.attackBox.width,
             this.attackBox.height
         );
 
@@ -532,7 +533,7 @@ class Player extends Sprite {
 
         if (this.health <= 0) {
             this.health = 0
-            this.changeSprite('death')
+            // this.changeSprite('death')
         } else {
             this.changeSprite('takeHit')
         }

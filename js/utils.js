@@ -1,6 +1,6 @@
 console.log('utils.js loaded')
 
-import { animationId, startAnimation } from './game.js';
+import { animationId, handleKeyDown, handleKeyUp, startAnimation } from './game.js';
 
 import {
     ctx1,
@@ -25,7 +25,8 @@ import {
     gameOption,
     result,
 
-    CONSTANTS
+    CONSTANTS,
+    endGameMessage
 } from './constants.js';
 
 import {
@@ -38,7 +39,7 @@ import {
 
 
 // ==================== Variables ===================== //
-let count1 = 0;
+let count1 = 2;
 let count2 = 1;
 let length = characters.numbers;
 let startTime = Date.now();
@@ -72,13 +73,11 @@ preloadSprites(gameSprites, (sprites) => {
     BackGround = new Sprite({
         position: { x: 0, y: 0 },
         img: sprites.gameObjects.background,
-        // imgSrc: sprites.gameObjects.background.src,
     })
 
     Shop = new Sprite({
         position: { x: 880, y: CONSTANTS.landingHeight - 447 },
         img: sprites.gameObjects.shop,
-        // imgSrc: sprites.gameObjects.shop.src,
         scale: 3.5,
         maxFrames: 6,
         frameHold: 10,
@@ -263,7 +262,7 @@ const countDown = () => {
         clock.textContent = gameDuration
 
         if (gameDuration <= 0) {
-            gameOver({ player: player1, enemy: player2, countDownId })
+            gameOver({ player: Player1, enemy: Player2, countDownId })
         } else {
             gameDuration--
             countDownId = setTimeout(countDown, 1000)
@@ -281,6 +280,9 @@ const gameOver = ({ player, enemy, countDownId }) => {
     window.removeEventListener('keydown', handleKeyDown)
     window.removeEventListener('keyup', handleKeyUp)
 
+    player.changeSprite('idle')
+    enemy.changeSprite('idle')
+    
     if (player.health > enemy.health) {
         result.textContent = 'Player One Wins'
     } else if (player.health < enemy.health) {
@@ -289,33 +291,35 @@ const gameOver = ({ player, enemy, countDownId }) => {
         result.textContent = 'Draw'
     }
 
+    if(player.health <= 0) {
+        player.changeSprite('death')
+    } else if(enemy.health <= 0) {
+        enemy.changeSprite('death')
+    }
+
+
     gameOption.classList.remove('hidden')
     endGameMessage.classList.remove('hidden')
 };
 
 const collision = ({ player, enemy }) => {
-    let isColliding = player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
+    let isColliding = player.attackBox.position.x >= enemy.position.x &&
         player.attackBox.position.x <= enemy.position.x + enemy.width &&
         player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
         player.attackBox.position.y <= enemy.position.y + enemy.height
     console.log('Collision Happening : ', isColliding)
-    return (
-        player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
-        player.attackBox.position.x <= enemy.position.x + enemy.width &&
-        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
-        player.attackBox.position.y <= enemy.position.y + enemy.height
-    )
+    return isColliding
 };
 
 const changeDirection = ({ player, enemy }) => {
-    if (player.position.x > enemy.position.x + enemy.width) {
+    if(player.position.x > enemy.position.x) {
         player.playerOffset = -1
         player.spriteOffset.dir = -1
-    } else {
-        player.spriteOffset.dir = 1
+    } else if (player.position.x < enemy.position.x) {
         player.playerOffset = 1
+        player.spriteOffset.dir = 1
     }
-};
+}
 
 const playerStanding = (player) => {
     if (Math.floor(
@@ -329,13 +333,12 @@ const playerStanding = (player) => {
 };
 
 
-
-
 export {
     count1,
     count2,
     showPlayers,
     isGameStarted,
+    countDownId,
 
     startGame,
     selectPlayers,
@@ -344,6 +347,7 @@ export {
     collision,
     changeDirection,
     playerStanding,
+    gameOver,
 
     BackGround,
     Shop,
