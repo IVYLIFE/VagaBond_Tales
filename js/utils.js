@@ -39,7 +39,7 @@ import {
 
 
 // ==================== Variables ===================== //
-let count1 = 2;
+let count1 = 0;
 let count2 = 1;
 let length = characters.numbers;
 let startTime = Date.now();
@@ -128,7 +128,7 @@ const selectPlayer = (count) => {
     return data;
 };
 
-const selectPlayers = (count1, count2) => {
+const selectPlayers = () => {
     player1PreviewData = selectPlayer(count1);
     player2PreviewData = selectPlayer(count2);
     console.log(player1PreviewData)
@@ -204,7 +204,6 @@ const selectPlayers = (count1, count2) => {
     animate();
 }
 
-
 const createPlayers = (count1, count2) => {
 
     let char1 = Object.keys(characters.list)[count1];
@@ -262,7 +261,7 @@ const countDown = () => {
         clock.textContent = gameDuration
 
         if (gameDuration <= 0) {
-            gameOver({ player: Player1, enemy: Player2, countDownId })
+            gameOver({ player: Player1, enemy: Player2, countDownId , TimeOut:true})
         } else {
             gameDuration--
             countDownId = setTimeout(countDown, 1000)
@@ -270,7 +269,7 @@ const countDown = () => {
     }
 };
 
-const gameOver = ({ player, enemy, countDownId }) => {
+const gameOver = ({ player, enemy, countDownId, TimeOut }) => {
     isGameStarted = false
     player.velocity.x = 0
     enemy.velocity.x = 0
@@ -280,9 +279,6 @@ const gameOver = ({ player, enemy, countDownId }) => {
     window.removeEventListener('keydown', handleKeyDown)
     window.removeEventListener('keyup', handleKeyUp)
 
-    player.changeSprite('idle')
-    enemy.changeSprite('idle')
-    
     if (player.health > enemy.health) {
         result.textContent = 'Player One Wins'
     } else if (player.health < enemy.health) {
@@ -291,10 +287,16 @@ const gameOver = ({ player, enemy, countDownId }) => {
         result.textContent = 'Draw'
     }
 
-    if(player.health <= 0) {
-        player.changeSprite('death')
-    } else if(enemy.health <= 0) {
-        enemy.changeSprite('death')
+    if(TimeOut){
+        player.changeSprite('idle' , true)
+        enemy.changeSprite('idle', true)
+    }
+    else if(player.health <= 0) {
+        player.changeSprite('death', true)
+        enemy.changeSprite('idle', true)
+    } else{
+        enemy.changeSprite('death', true)
+        player.changeSprite('idle', true)
     }
 
 

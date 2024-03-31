@@ -373,8 +373,8 @@ class Sprite {
             ctx.save();
             ctx.scale(-1, 1);
 
-            ctx.fillStyle = "blue"; // Fill color
-            ctx.fillRect(-1200, 670, this.width, 100); // (x, y, width, height)
+            // ctx.fillStyle = "blue"; // Fill color
+            // ctx.fillRect(-1200, 670, this.width, 100); // (x, y, width, height)
 
             ctx.drawImage(
                 this.image,
@@ -484,8 +484,11 @@ class Player extends Sprite {
     }
 
     update() {
+        if(this.sprites.death.image === this.image && this.currentFrame >= this.maxFrames - 1){
+           this.dead = true
+        }
         this.draw()
-        if (!this.dead) { this.changeFrame() }
+         if (!this.dead) { this.changeFrame() }
 
         if (this.spriteOffset.dir === 1) {
             this.attackBox.position.x = this.position.x + this.width + this.attackBox.width
@@ -529,28 +532,30 @@ class Player extends Sprite {
     }
 
     takeHit() {
-        this.health -= 10;
+        this.health -= 40;
 
         if (this.health <= 0) {
             this.health = 0
-            // this.changeSprite('death')
+            this.changeSprite('death')
         } else {
             this.changeSprite('takeHit')
         }
     }
 
-    changeSprite(sprite) {
-        if (this.image === this.sprites.death.image) {
-            if (this.currentFrame === this.sprites.death.maxFrames - 1) { this.dead = true }
-            return
-        }
+    changeSprite(sprite, Ended) {
+        // console.log(this.name , "is changed to ", sprite)
 
-        if (this.image === this.sprites.attack1.image && this.currentFrame < this.sprites.attack1.maxFrames - 1) return
-        if (this.image === this.sprites.takeHit.image && this.currentFrame < this.sprites.takeHit.maxFrames - 1) return
+        if(!Ended){
+            if (this.image === this.sprites.attack1.image && this.currentFrame < this.sprites.attack1.maxFrames - 1) return
+            if (this.image === this.sprites.takeHit.image && this.currentFrame < this.sprites.takeHit.maxFrames - 1) return
+        }
+        
+        // console.log(this.name , "22 is changed to ", sprite)
 
         switch (sprite) {
             case 'idle':
                 if (this.image !== this.sprites.idle.image) {
+                    // console.log(this.name , ": I am idle")
                     this.image = this.sprites.idle.image
                     this.maxFrames = this.sprites.idle.maxFrames
                     this.currentFrame = 0
@@ -605,6 +610,7 @@ class Player extends Sprite {
                 }
                 break
         }
+
     }
 }
 

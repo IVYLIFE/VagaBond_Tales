@@ -1,6 +1,7 @@
 console.log('game.js loaded')
 
 import { CONSTANTS, canvas, ctx } from "./constants.js";
+import { Player } from "./gameElements.js";
 import { 
     isGameStarted, 
     showPlayers,

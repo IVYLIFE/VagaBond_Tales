@@ -33,10 +33,13 @@ body {
   }
 }
 
-
 /* =========== Game Info =========== */
 #top {
   position: absolute;
+  max-width: 1400px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   width: 100%;
   padding: 20px;
 }
@@ -98,7 +101,6 @@ body {
 
 /* =========== Game Result =========== */
 .gameOption {
-  width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,7 +116,12 @@ body {
 }
 
 .gameOption > div {
-  width: 100%;
+  width: fit-content;
+  cursor: pointer;
+}
+
+#choosePlayers {
+  margin: 0.8rem 0 0.5rem;
 }
 
 #previewCanvasContainer {
@@ -125,26 +132,20 @@ body {
   margin-bottom: 0.5rem;
 }
 
-#choosePlayers {
-  margin-bottom: 1rem;
-}
-
-
 .preview canvas {
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
   width: 100%;
 }
 
-#playerSelectionContainer{
+#playerSelectionContainer {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
-#playerSelectionContainer > div{
+#playerSelectionContainer > div {
   flex: 1;
 }
-
 
 .player1Controls,
 .player2Controls {
@@ -152,6 +153,8 @@ body {
   justify-content: space-around;
   align-items: center;
   background-color: aliceblue;
+  padding: 0.5rem;
+  height: 45px;
   gap: 1rem;
 }
 
@@ -171,11 +174,12 @@ body {
 }
 
 .player1Controls p,
-.player2Controls p{
-  flex : 1;
+.player2Controls p {
+  flex: 1;
   text-align: center;
-  font-size: clamp(0.6rem, 1vw, 1rem);
+  font-size: clamp(0.5rem, 1vw, 1rem);
   border-bottom: 1px dotted black;
+  padding-bottom: 0.2rem;
 }
 
 .preview .left {
@@ -186,23 +190,20 @@ body {
   right: 4%;
 }
 
-.left:hover,
-.right:hover {
+.player1Controls .left:hover,
+.player1Controls .right:hover,
+.player2Controls .left:hover,
+.player2Controls .right:hover {
   background-color: #d1caca;
   opacity: 0.5;
 }
 
-#play,
-#endGameMessage,
-#selectionContainer {
-  width: fit-content;
-  cursor: pointer;
-}
 
 #endGameMessage #result {
-  font-size: 1.3rem;
   text-align: center;
   font-weight: bold;
+  font-size: clamp(0.6rem, 1vw, 1rem);
+  margin-bottom: 0.5rem;
 }
 
 .gameOption .btn {
@@ -210,9 +211,9 @@ body {
   min-width: 150px;
   background-color: rgb(221, 235, 247);
   text-align: center;
-  padding: 5px;
+  padding: clamp(0.5rem, 1vw, 1rem);
   border-radius: 4px;
-  font-size: clamp(0.8rem, 1vw, 1.5rem);
+  font-size: clamp(0.5rem, 1vw, 1.5rem);
   transition: 0.2s ease-in-out;
   cursor: pointer;
   margin: 0 auto;
@@ -226,17 +227,12 @@ body {
   display: none;
 }
 
-
 @media screen and (max-width: 1100px) {
   .gameOption {
-    top: 25%;
+    top: 32%;
   }
 }
-@media screen and (max-width: 800px) {
-  .gameOption {
-    top: 20%;
-  }
-}
+
 
 
 @media screen and (max-width: 900px) {
@@ -266,6 +262,17 @@ body {
     top: 70px;
     padding: 0;
   }
+
+  .player1Controls,
+  .player2Controls {
+    height: 30px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .gameOption {
+    top: 25%;
+  }
 }
 
 @media screen and (max-width: 750px) {
@@ -289,7 +296,6 @@ body {
   }
 
   .gameOption {
-    top: 15%;
+    top: 20%;
   }
 }
-

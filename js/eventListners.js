@@ -28,17 +28,17 @@ import {
 
 
 // Call startGame() 10 seconds after the page loads
-setTimeout(() => {
-    console.log('1 seconds have passed');
-    startGame()
-}, 1000);
+// setTimeout(() => {
+//     console.log('1 seconds have passed');
+//     startGame()
+// }, 1000);
 
-playBtn.classList.add('hidden');
 
 playBtn.addEventListener('click', () => {
+    playBtn.classList.add('hidden');
     console.log('Play Button Clicked');
     selectionContainer.classList.remove('hidden');
-    selectPlayers(count1, count2)
+    selectPlayers()
 })
 
 startGameBtn.addEventListener('click', startGame)
