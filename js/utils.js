@@ -209,13 +209,25 @@ const createPlayers = (count1, count2) => {
     let char1 = Object.keys(characters.list)[count1];
     let char2 = Object.keys(characters.list)[count2];
 
+    const scale1 = characters.list[char1].scale;
+    const scale2 = characters.list[char2].scale;
+
+    // const y1 = (characters.list[char1].dimension.height - characters.list[char1].img.height) * scale1;
+    // const y2 = (characters.list[char2].dimension.height - characters.list[char2].img.height) * scale2;
+
+    const y1 = 0;
+    const y2 = 0;
+
     const player1 = new Player({
         ...characters.list[char1], // Spread the properties of 'miyamoto'
-        position: { x: 0, y: 0 },
+        position: { 
+            x: 0, 
+            y: y1
+        },
         velocity: { x: 0, y: 0 },
         spriteOffset: {
-            x: Math.floor(characters.list[char1].spriteOffset.x * characters.list[char1].scale),
-            y: Math.floor(characters.list[char1].spriteOffset.y * characters.list[char1].scale),
+            x: Math.floor(characters.list[char1].spriteOffset.x * scale1),
+            y: Math.floor(characters.list[char1].spriteOffset.y * scale1),
             dir: 1
         },
         playerOffset: 1,
@@ -223,11 +235,14 @@ const createPlayers = (count1, count2) => {
 
     const player2 = new Player({
         ...characters.list[char2], // Spread the properties of 'miyamoto'
-        position: { x: 1200, y: 0 },
+        position: { 
+            x: 1200, 
+            y: y2
+        },
         velocity: { x: 0, y: 0 },
         spriteOffset: {
-            x: characters.list[char2].spriteOffset.x * characters.list[char2].scale,
-            y: characters.list[char2].spriteOffset.y * characters.list[char2].scale,
+            x: characters.list[char2].spriteOffset.x * scale2,
+            y: characters.list[char2].spriteOffset.y * scale2,
             dir: -1
         },
         playerOffset: -1,
@@ -305,13 +320,73 @@ const gameOver = ({ player, enemy, countDownId, TimeOut }) => {
 };
 
 const collision = ({ player, enemy }) => {
-    let isColliding = player.attackBox.position.x >= enemy.position.x &&
-        player.attackBox.position.x <= enemy.position.x + enemy.width &&
-        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
-        player.attackBox.position.y <= enemy.position.y + enemy.height
-    console.log('Collision Happening : ', isColliding)
+
+    const direction      = player.playerOffset
+    const offset1        = player.position.x < enemy.position.x + enemy.width
+    const offset2        = player.position.x + player.width > enemy.position.x
+    const swordTouching1 = player.attackBox.position.x >= enemy.position.x
+    const swordTouching2 = player.attackBox.position.x <= enemy.position.x + enemy.width
+
+    const swoedTouching  = direction === 1 ? swordTouching1 : swordTouching2
+    const offset         = direction === 1 ? offset1 : offset2
+    const enemyY         = enemy.position.y + enemy.image.height * enemy.scale - enemy.height
+
+    
+    let isColliding = 
+        swoedTouching && offset &&
+        player.attackBox.position.y + player.attackBox.height >= enemyY &&
+        player.attackBox.position.y <= enemyY + enemy.height
     return isColliding
 };
+
+// document.addEventListener('click', () => {
+//     if (isGameStarted) {
+        
+//         console.log(`
+//         Player        : ${Player1.name} 
+//         Player.offset : ${Player1.playerOffset}
+//         Position.X    : ${Player1.position.x} 
+//         Position.Y    : ${Player1.position.y}
+//         Width         : ${Player1.width}
+//         Height        : ${Player1.height}
+//         AttackBox.x   : ${Player1.attackBox.position.x}
+//         AttackBox.y   : ${Player1.attackBox.position.y}
+//         AttackBox.w   : ${Player1.attackBox.width}
+//         AttackBox.h   : ${Player1.attackBox.height}
+
+//         ${Player1.attackBox.position.x} >= ${Player2.position.x}
+//         ${Player1.position.x} < ${Player2.position.x + Player2.width}
+//         ${Player1.attackBox.position.y} + ${Player1.attackBox.height} >= ${Player2.position.y}
+//         ${Player1.attackBox.position.y} <= ${Player2.position.y} + ${Player2.height}
+//         `)
+
+//         console.log(`
+//         Enemy         : ${Player2.name}
+//         Enemy.offset  : ${Player2.playerOffset}
+//         Position.X    : ${Player2.position.x}
+//         Position.Y    : ${Player2.position.y}
+//         Width         : ${Player2.width}
+//         Height        : ${Player2.height}
+//         AttackBox.x   : ${Player2.attackBox.position.x}
+//         AttackBox.y   : ${Player2.attackBox.position.y}
+//         AttackBox.w   : ${Player2.attackBox.width}
+//         AttackBox.h   : ${Player2.attackBox.height}
+
+//         ${Player2.attackBox.position.x} <= ${Player1.position.x + Player1.width}
+//         ${Player2.position.x} + ${Player2.width} > ${Player1.position.x}
+//         ${Player2.attackBox.position.y} + ${Player2.attackBox.height} >= ${Player1.position.y}
+//         ${Player2.attackBox.position.y} <= ${Player1.position.y} + ${Player1.height}
+//         `)
+
+//         console.log(Player1)
+//         console.log(Player2)
+
+//         console.log(`Player 1 PositionY : ${Player1.position.y} + ${Player1.image.height * Player1.scale} - ${Player1.height} = ${Player1.position.y + Player1.image.height * Player1.scale - Player1.height}`)
+//         console.log(`Player 2 PositionY : ${Player2.position.y} + ${Player2.image.height * Player2.scale} - ${Player2.height} = ${Player2.position.y + Player2.image.height * Player2.scale - Player2.height}`)
+//         console.log('===========================================================================\n\n\n\n')
+//     }
+
+// });
 
 const changeDirection = ({ player, enemy }) => {
     if(player.position.x > enemy.position.x) {

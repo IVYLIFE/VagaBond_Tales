@@ -1,5 +1,9 @@
 console.log('gameElements.js loaded')
 
+// Generate A random number between 0 and 100
+const randomNum = () => Math.floor(Math.random() * 100);
+const number = randomNum();
+
 import {
     ctx,
     CONSTANTS
@@ -390,25 +394,27 @@ class Sprite {
         }
 
         // draw a rectangle around the player
-        if (this.frameWidth === CONSTANTS.gameCanvasWidth) {
+        if (this.frameWidth === CONSTANTS.gameCanvasWidth && number % 2 === 0) {
             ctx.fillStyle = '#0000FF50';
+            // ctx.fillStyle = '#FEFFB640';
             ctx.fillRect(
                 this.position.x - this.spriteOffset.x,
                 this.position.y - this.spriteOffset.y,
                 this.frameWidth * this.scale,
                 this.frameHeight * this.scale
             );
-        } else {
-            ctx.strokeStyle = '#FF0000';
-            ctx.lineWidth = 2;
+        } 
+        // else {
+        //     ctx.strokeStyle = '#FF0000';
+        //     ctx.lineWidth = 2;
 
-            ctx.strokeRect(
-                this.position.x,
-                this.position.y + (this.frameHeight * this.scale) - this.height,
-                this.width,
-                this.height,
-            );
-        }
+        //     ctx.strokeRect(
+        //         this.position.x,
+        //         this.position.y + (this.frameHeight * this.scale) - this.height,
+        //         this.width,
+        //         this.height,
+        //     );
+        // }
     }
 
     update() {
@@ -499,20 +505,19 @@ class Player extends Sprite {
 
 
         this.attackBox.position.y = this.position.y - this.attackBox.height + (this.image.height - this.attackBox.offset.y) * this.scale
-        ctx.fillStyle = this.spriteOffset.dir === 1 ? '#FF000050' : '#00FF0050';
+        // ctx.fillStyle = this.spriteOffset.dir === 1 ? '#FF000050' : '#00FF0050';
 
-        ctx.fillRect(
-            this.attackBox.position.x,
-            this.attackBox.position.y,
-            this.spriteOffset.dir === 1 ? -this.attackBox.width : this.attackBox.width,
-            this.attackBox.height
-        );
+        // ctx.fillRect(
+        //     this.attackBox.position.x,
+        //     this.attackBox.position.y,
+        //     this.spriteOffset.dir === 1 ? -this.attackBox.width : this.attackBox.width,
+        //     this.attackBox.height
+        // );
 
         this.position.x += this.velocity.x
         if (Math.floor(
             this.position.y +
-            this.image.height *
-            this.scale +
+            this.image.height * this.scale +
             this.velocity.y) > CONSTANTS.landingHeight) {
             // if (Math.floor(this.position.y + this.height + this.velocity.y) > CONSTANTS.landingHeight) {
             this.velocity.y = 0

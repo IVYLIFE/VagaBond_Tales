@@ -11,7 +11,7 @@ const gameCanvasWidth  = 1400;
 const gameCanvasHeight = 785;
 const previewWidth     = 220;
 const previewHeight    = 220;
-const gameDuration     = 60;
+const gameDuration     = 90;
 
 
 
